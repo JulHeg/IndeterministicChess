@@ -4,16 +4,16 @@
 
 1.1. In einem Zug kann ein Teil einer Figur in einer beliebigen Größe (1% - 99%) abgespalten werden.
 
-1.2. Der abgespaltene Teil muss entsprechend der Zugregeln bewegt werden.
+1.2. Der abgespaltene Teil, soweit existent, muss entsprechend der Zugregeln bewegt werden.
 
-1.3. Derselbe Figurtyp (auch die "Restfigur") darf entsprechend der Zugregeln bewegt werden.
+1.3. Derselbe Figurtyp (auch die "Restfigur", bzw. die nicht gespaltenene Figur) darf entsprechend der Zugregeln bewegt werden.
 
 
 ## 2. Zugregeln
 
 2.1. In einem Zug darf maximal ein Figurtyp bewegt werden.
 
-2.2. Es darf maximal 100% Gesamtwahrscheinlichkeit bewegt werden.
+2.2. Es darf maximal 100% Gesamtwahrscheinlichkeit bewegt werden, es gilt **kein** Zugzwang.
 
 2.3. Es dürfen maximal zwei Figurinstanzen bewegt werden.
 
@@ -30,3 +30,4 @@
 3.2. Sollte auf einem Feld Figur _n_, sowie ein oder mehrere andersfarbigen Figuren _m1_, _m2_, ..., _m(n-1)_ auf dem Feld stehen, so ist nach dem zusätzlichen draufziehen der Figur mit der Wahrscheinlichkeit _m(n)_, die Wahrscheinlichkeit _n_ gleich `n*(1-(_m1_ + _m2_ + ... _m(n)_))`.
 
 3.3. Sollten mehrere Figuren einer Farbe von ein oder mehreren Figuren angegriffen werden, so werden für die anzugreifenden Figuren die Regeln 3\.1\. bzw. 3\.2\. getrennt angewand.
+
