@@ -6,3 +6,5 @@ Die Hauptähnlichkeit ist das mangelnde allgemeine Interesse, die unnötige und 
 Mit freundlichen Grüßen
 
 JulHeg, SelfGamer
+
+[Regeln](https://github.com/SelfGamer/IndeterministicChess/blob/master/Rules.md "Regeln")
