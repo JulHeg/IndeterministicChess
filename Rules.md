@@ -21,13 +21,26 @@
 
 2.5. Es darf auf einem Feld nicht mehr als 100% Figurenwahrscheinlichkeit bestehen (berechet **nach** dem Schlagen, siehe Schlagregeln).
 
-2.6. Die restlichen Bewegungsregeln werden übernommen.
+2.6. Sollte ein Bauer mit Wahrscheinlichkeit _n_ die gegnerische Grundlinie erreichen, so darf sich in eine beliebige Figur (außer einem König) mit der Existenzwahrscheinlichkeit _n_ verwandeln.
+
+2.7. Die restlichen Bewegungsregeln werden übernommen.
 
 ## 3. Schlagregeln
 
 3.1. Wenn eine Figur mit der Wahrscheinlichkeit _n_ auf einem Feld steht und eine andersfarbige Figur mit der Wahrscheinlichkeit _m_ daraufzieht (bzw. sie Schlägt), hat Figur _n_ danach `n*(1-m)` Wahrscheinlichkeit und Wahrscheinlichkeit _m_ bleibt gleich.
 
-3.2. Sollte auf einem Feld Figur _n_, sowie ein oder mehrere andersfarbigen Figuren _m1_, _m2_, ..., _m(n-1)_ auf dem Feld stehen, so ist nach dem zusätzlichen draufziehen der Figur mit der Wahrscheinlichkeit _m(n)_, die Wahrscheinlichkeit _n_ gleich `n*(1-(_m1_ + _m2_ + ... _m(n)_))`.
+3.2. Sollte auf einem Feld Figur _n_, sowie ein oder mehrere andersfarbigen Figuren _m1_, _m2_, ..., _m(n-1)_ auf dem Feld stehen, so ist nach dem zusätzlichen draufziehen der Figur mit der Wahrscheinlichkeit _m(n)_, die Wahrscheinlichkeit _n_ gleich `n*(1-(m1 + m2 + ... m(n)))`.
 
 3.3. Sollten mehrere Figuren einer Farbe von ein oder mehreren Figuren angegriffen werden, so werden für die anzugreifenden Figuren die Regeln 3\.1\. bzw. 3\.2\. getrennt angewand.
 
+3.4. Sollte eine Figur oder ein Figurteil unter 10% Existenzwahrscheinlichkeit fallen, so wird die Figur bzw. der Figurteil aus dem Spiel entfernt.
+
+3.5. Wir entschuldigen uns bei den Familien der Opfer von "En passent" wegen der unseniblen Wortwahl. Dieses wird deshalb abgeschafft.
+
+## 4. Spielende
+
+4.1. Es gibt weder Schach noch Schachmatt.
+
+4.2. Der König kann entsprechend der Schlagregeln geschlagen werden.
+
+4.3. Sollte der König (bzw. alle Königsinstanzen zusammen) die Existenzwahrscheinlichkeit `n < 100%` haben, so ist die Wahrscheinlichkeit einer direkten Niederlage `1-n`.
