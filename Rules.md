@@ -19,7 +19,7 @@
 
 2.4. Wenn zwei Figuren mit den Wahrscheinlichkeiten _m_ und _n_ des gleichen Types und der gleichen Farbe auf ein Feld rücken so werden diese zu einer Figur mit der Wahrscheinlichkeit `1-(1-m)*(1-n)` kombiniert.
 
-2.5. Es darf auf einem Feld nicht mehr als 100% Figurenwahrscheinlichkeit bestehen (berechet **nach** dem Schlagen, siehe Schlagregeln).
+2.5. Die Summe aller Warscheinlichkeiten von Figuren einer Farbe auf einem Feld darf 100% nicht übersteigen.
 
 2.6. Sollte ein Bauer mit Wahrscheinlichkeit _n_ die gegnerische Grundlinie erreichen, so darf sich in eine beliebige Figur (außer einem König) mit der Existenzwahrscheinlichkeit _n_ verwandeln.
 
