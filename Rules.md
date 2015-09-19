@@ -22,7 +22,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 2.3. Es dürfen maximal zwei Figurinstanzen bewegt werden.
 
-2.4. Wenn zwei Figuren mit den Wahrscheinlichkeiten _m_ und _n_ des gleichen Types und der gleichen Farbe auf ein Feld rücken so werden diese zu einer Figur mit der Wahrscheinlichkeit `1-(1-m)*(1-n)` kombiniert.
+2.4. Wenn zwei Figuren mit den Wahrscheinlichkeiten _m_ und _n_ des gleichen Types und der gleichen Farbe auf ein Feld rücken so werden diese zu einer Figur mit der Wahrscheinlichkeit `100%-(100%-m)*(100%-n)` kombiniert.
 
 2.5. Die Summe aller Wahrscheinlichkeiten von Figuren einer Farbe auf einem Feld darf 100% nicht übersteigen.
 
@@ -32,15 +32,15 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 ## 3. Schlagregeln
 
-3.1. Wenn eine Figur mit der Wahrscheinlichkeit _n_ auf einem Feld steht und eine andersfarbige Figur mit der Wahrscheinlichkeit _m_ daraufzieht (bzw. sie Schlägt), hat Figur _n_ danach die Wahrscheinlichkeit `n*(1-m)` zu existieren, die Wahrscheinlichkeit _m_ bleibt gleich.
+3.1. Wenn eine Figur mit der Wahrscheinlichkeit _n_ auf einem Feld steht und eine andersfarbige Figur mit der Wahrscheinlichkeit _m_ daraufzieht (bzw. sie schlägt), hat Figur _n_ danach die Wahrscheinlichkeit `n*(1-m)` zu existieren, die Wahrscheinlichkeit _m_ bleibt gleich.
 
-3.2. Sollte auf einem Feld Figur _n_, sowie ein oder mehrere andersfarbigen Figuren _m1_, _m2_, ..., _m(n-1)_ auf dem Feld stehen, so ist nach dem zusätzlichen Draufziehen der Figur mit der Wahrscheinlichkeit _m(n)_, die Wahrscheinlichkeit _n_ gleich `n*(1-(m1 + m2 + ... m(n)))`.
+3.2. Sollte auf einem Feld Figur _n_, sowie ein oder mehrere andersfarbigen Figuren _m1_, _m2_, ..., _m(n-1)_ auf dem Feld stehen, so ist nach dem zusätzlichen Draufziehen der Figur mit der Wahrscheinlichkeit _m(n)_, die Wahrscheinlichkeit _n_ gleich `n*(100%-(m1 + m2 + ... + m(n)))/(100%-(m1 + m2 + ... + m(n-1)))`.
 
 3.3. Sollten mehrere Figuren einer Farbe von einer oder mehreren Figuren angegriffen werden, so werden für die anzugreifenden Figuren die Regeln 3\.1\. bzw. 3\.2\. getrennt angewandt.
 
 3.4. Sollte eine Figur oder ein Figurteil unter 10% Existenzwahrscheinlichkeit fallen, so wird die Figur bzw. dieser Figurteil aus dem Spiel entfernt.
 
-3.5. Wir entschuldigen uns bei den Angehörigen der Opfer des "En passent"-Mordes wegen unserer unsensiblen Wortwahl. Dieses wird deshalb abgeschafft. Wir werden ihren Opfer nicht vergessen, dass die feindlichen Bauern, wenn schon nicht aufhalten, doch wenigstens ein Feld zur Seite verlagern konnte.
+3.5. Wir entschuldigen uns bei den Angehörigen der Opfer des "En passent"-Mordes wegen unserer unsensiblen Wortwahl. Dieses wird deshalb abgeschafft. Wir werden ihr Opfer nicht vergessen, dass die feindlichen Bauern, wenn schon nicht aufhalten, doch wenigstens ein Feld zur Seite verschieben konnte.
 
 ## 4. Spielende
 
