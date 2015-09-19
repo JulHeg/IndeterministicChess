@@ -22,13 +22,15 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 2.3. Es dürfen maximal zwei Figurinstanzen bewegt werden.
 
-2.4. Wenn zwei Figuren mit den Wahrscheinlichkeiten _m_ und _n_ des gleichen Types und der gleichen Farbe auf ein Feld rücken so werden diese zu einer Figur mit der Wahrscheinlichkeit `100%-(100%-m)*(100%-n)` kombiniert.
+2.4. Wenn sich eine Figur teilt können sich ihre Teile wieder zusammensetzen, indem sie auf dasselbe Feld ziehen. Haben die beiden Teile die Wahrscheinlichkeiten _m_ und _n_, so hat die entstehende Figur die Wahrscheinlicheit _m+n_ zu existieren. Auch mehr als zwei Figuren können isch über eine solche Addition kombinieren.
 
-2.5. Die Summe aller Wahrscheinlichkeiten von Figuren einer Farbe auf einem Feld darf 100% nicht übersteigen.
+2.5. Wenn zwei Figuren mit den Wahrscheinlichkeiten _m_ und _n_ des gleichen Types und der gleichen Farbe auf ein Feld rücken, aber nicht von derselben Anfangsfigur stammen, so werden diese zu einer Figur mit der Wahrscheinlichkeit `100%-(100%-m)*(100%-n)` kombiniert.
 
-2.6. Sollte ein Bauer mit Wahrscheinlichkeit _n_ die gegnerische Grundlinie erreichen, so darf sich in eine beliebige Figur (außer einem König) mit der Existenzwahrscheinlichkeit _n_ verwandeln.
+2.6. Die Summe aller Wahrscheinlichkeiten von Figuren einer Farbe auf einem Feld darf 100% nicht übersteigen.
 
-2.7. Die restlichen Bewegungsregeln werden übernommen.
+2.7. Sollte ein Bauer mit Wahrscheinlichkeit _n_ die gegnerische Grundlinie erreichen, so darf sich in eine beliebige Figur (außer einem König) mit der Existenzwahrscheinlichkeit _n_ verwandeln.
+
+2.8. Die restlichen Bewegungsregeln werden vom normalen Schach übernommen.
 
 ## 3. Schlagregeln
 
