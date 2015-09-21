@@ -21,7 +21,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 2.1. In einem Zug darf maximal ein Figurtyp bewegt werden.
 
-2.2. Es dürfen nur Figuren mit maximal 100% Gesamtwahrscheinlichkeit bewegt werden, es gilt **kein** Zugzwang.
+2.2. Es dürfen nur Figuren mit maximal 100% Gesamtwahrscheinlichkeit bewegt werden, es gilt **kein** Zugzwang (Wenn sich beide Spieler nicht bewegen, ist Patt).
 
 2.3. Es dürfen maximal zwei Figurinstanzen bewegt werden.
 
@@ -55,4 +55,4 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 4.2. Der König kann entsprechend den Schlagregeln geschlagen werden.
 
-4.3. Sollte der König (bzw. alle Königsinstanzen zusammen) die Existenzwahrscheinlichkeit `n <= 100%` haben, so ist die Wahrscheinlichkeit in diesem Zug automatisch zu verlieren `100%-n`.
+4.3. Sollte der König (bzw. alle Königsinstanzen zusammen) die Existenzwahrscheinlichkeit `n <= 100%` haben, so ist die Wahrscheinlichkeit in diesem Zug automatisch zu verlieren `n-100%`.
