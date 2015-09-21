@@ -21,7 +21,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 2.1. In einem Zug darf maximal ein Figurtyp bewegt werden.
 
-2.2. Es dürfen nur Figuren mit maximal 100% Gesamtwahrscheinlichkeit bewegt werden, es gilt **kein** Zugzwang (Wenn sich beide Spieler nicht bewegen, ist Patt).
+2.2. Es dürfen nur Figuren mit maximal 100% Gesamtwahrscheinlichkeit bewegt werden, es gilt **kein** Zugzwang (Wenn sich beide Spieler drei Runden lang nicht bewegen, ist Patt).
 
 2.3. Es dürfen maximal zwei Figurinstanzen bewegt werden.
 
