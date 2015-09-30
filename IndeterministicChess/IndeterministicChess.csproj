@@ -63,8 +63,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\MainGame.cs" />
+    <Compile Include="Graphics\MainGraphics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Graphics\MainGraphics.Designer.cs">
+      <DependentUpon>MainGraphics.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sound\MainSound.cs" />
+    <EmbeddedResource Include="Graphics\MainGraphics.resx">
+      <DependentUpon>MainGraphics.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

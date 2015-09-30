@@ -1,8 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using IndeterministicChess.Game;
+using IndeterministicChess.Sound;
 
 namespace IndeterministicChess
 {
@@ -16,8 +20,10 @@ namespace IndeterministicChess
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           
-            //hier gehts los :P
+
+            Thread game = new Thread(MainGame.entry);
+            Thread sound = new Thread(MainSound.entry);
+            Application.Run(new MainGraphics());
         }
     }
 }
