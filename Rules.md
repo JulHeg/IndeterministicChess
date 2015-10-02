@@ -3,7 +3,7 @@
 
 ## Präambel
 
-Beim normalen Schach steht immer eine Figur alleine auf einem Feld. Beim nicht deterministischen Schach kann sich eine Figur auf mehre Felder verteilen, die sie sich auch mit anderen Figuren teilen kann. Diese Verteilung ist dabei eine Wahrscheinlichkeitsverteilung, eine Dame kann also etwa mit einer 10°-Wahrscheinlichkeit auf dem Feld A4, mit einer 60%-Wahrscheinlichkeit auf B5 und mit einer 30%-Wahrscheinlichkeit schon geschlagen sein.
+Beim normalen Schach steht immer eine Figur alleine auf einem Feld. Beim nicht deterministischen Schach kann sich eine Figur auf mehre Felder verteilen, die sie sich auch mit anderen Figuren teilen kann. Diese Verteilung ist dabei eine Wahrscheinlichkeitsverteilung, eine Dame kann also etwa mit einer 10%-Wahrscheinlichkeit auf dem Feld A4, mit einer 60%-Wahrscheinlichkeit auf B5 und mit einer 30%-Wahrscheinlichkeit schon geschlagen sein.
 Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame befindet.
 
 ## Regeln
