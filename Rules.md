@@ -27,7 +27,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 2.4. Eine Figur mit der Wahrscheinlichkeit _n_ darf ein Feld nur überqueren, wenn die Wahrscheinlichkeit das dort irgendeine Figur steht (Die ist gleich der Summe der Wahrscheinlichkeiten aller Figuren auf dem Feld) kleiner als _100%-n_ ist.
 
-2.5. Gleiche Figuren können ihre Teile wieder zusammensetzen, indem sie auf dasselbe Feld ziehen. Haben die beiden Teile die Wahrscheinlichkeiten _m_ und _n_, so hat die entstehende Figur die Wahrscheinlicheit _m+n_ zu existieren. Auch mehr als zwei Figuren können sich über eine solche Addition kombinieren.
+2.5. Gleiche Figuren können ihre Teile wieder zusammensetzen, indem sie auf dasselbe Feld ziehen. Haben die beiden Teile die Wahrscheinlichkeiten _m_ und _n_, so hat die entstehende Figur die Wahrscheinlichkeit _m+n_ zu existieren. Auch mehr als zwei Figuren können sich über eine solche Addition kombinieren.
 
 2.6. Die Summe aller Wahrscheinlichkeiten von Figuren einer Farbe auf einem Feld darf 100% nicht übersteigen.
 
