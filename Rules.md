@@ -10,7 +10,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 ### 1. Figurregeln
 
-1.1. In einem Zug kann ein Teil einer Figur in einer beliebigen Größe (1% - 99%) abgespalten werden.
+1.1. In einem Zug kann ein Teil einer Figur in einer beliebigen Größe (10% - 90%) abgespalten werden.
 
 1.2. Der abgespaltene Teil, soweit existent, muss entsprechend der Zugregeln bewegt werden.
 
