@@ -1,10 +1,3 @@
-Sehr geehrte Damen und Herren,
+In diesem Projekt soll es darum gehen, ein Schachvariante zu entwickeln, bei der Figuren auf mehreren Feldern gleichzeitig bzw. zu verschiedenen Anteilen stehen können. 
 
-hiermit möchten wir Ihnen unsere neueste Kreation vorstellen: Das indeterministische Schach! diese Spielvariation ist inspriert von Quanten- und Stringtheorie.
-Die Hauptähnlichkeit ist das mangelnde allgemeine Interesse, die unnötige und vorteilslose Überkomplexität.
-
-Mit freundlichen Grüßen
-
-JulHeg, SelfGamer
-
-[Regeln](https://github.com/SelfGamer/IndeterministicChess/blob/master/Rules.md "Regeln")
+Die Regeln sind im Detail in der Datei Rules.md spezifiziert, eine Implementierung steht allerdings noch aus.
