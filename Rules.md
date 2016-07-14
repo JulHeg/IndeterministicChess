@@ -25,7 +25,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 2.3. Es dürfen maximal zwei Figurinstanzen bewegt werden.
 
-2.4. Eine Figur mit der Wahrscheinlichkeit _n_ darf ein Feld nur überqueren, wenn die Wahrscheinlichkeit das dort irgendeine Figur steht (Die ist gleich der Summe der Wahrscheinlichkeiten aller Figuren auf dem Feld) kleiner als _100%-n_ ist.
+2.4. Eine Figur mit der Wahrscheinlichkeit _n_ darf ein Feld nur überqueren, wenn die Wahrscheinlichkeit, dass dort irgendeine Figur steht (Die ist gleich der Summe der Wahrscheinlichkeiten aller Figuren auf dem Feld) kleiner als _100%-n_ ist.
 
 2.5. Gleiche Figuren können ihre Teile wieder zusammensetzen, indem sie auf dasselbe Feld ziehen. Haben die beiden Teile die Wahrscheinlichkeiten _m_ und _n_, so hat die entstehende Figur die Wahrscheinlichkeit _m+n_ zu existieren. Auch mehr als zwei Figuren können sich über eine solche Addition kombinieren.
 
@@ -53,4 +53,4 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 4.2. Der König kann entsprechend den Schlagregeln geschlagen werden.
 
-4.3. Sollte der König (bzw. alle Königsinstanzen zusammen) die Existenzwahrscheinlichkeit `n <= 100%` haben, so ist die Wahrscheinlichkeit in diesem Zug automatisch zu verlieren `100%-n`.
+4.3. Sollte der König (bzw. alle Königsinstanzen zusammen) die Existenzwahrscheinlichkeit `n ≤ 100%` haben, so ist die Wahrscheinlichkeit in diesem Zug automatisch zu verlieren `100%-n`.
