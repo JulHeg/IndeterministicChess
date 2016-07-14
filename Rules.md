@@ -45,7 +45,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 3.4. Sollte eine Figur oder ein Figurteil unter 10% Existenzwahrscheinlichkeit fallen, so wird die Figur bzw. dieser Figurteil aus dem Spiel entfernt.
 
-3.5. Wir entschuldigen uns bei den Angehörigen der Opfer des "En passent"-Mordes wegen unserer unsensiblen Wortwahl. Dieses wird deshalb abgeschafft. Wir werden ihr Opfer nicht vergessen, dass die feindlichen Bauern, wenn schon nicht aufhalten, doch wenigstens ein Feld zur Seite verschieben konnte.
+3.5. Es gibt keine en-passant-Züge.
 
 ### 4. Spielende
 
