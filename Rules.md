@@ -4,24 +4,19 @@
 ## Präambel
 
 Beim normalen Schach steht immer eine Figur alleine auf einem Feld. Beim nicht deterministischen Schach kann sich eine Figur auf mehre Felder verteilen, die sie sich auch mit anderen Figuren teilen kann. Diese Verteilung ist dabei eine Wahrscheinlichkeitsverteilung, eine Dame kann also etwa mit einer `10%`-Wahrscheinlichkeit auf dem Feld A4, mit einer `60%`-Wahrscheinlichkeit auf B5 und mit einer `30%`-Wahrscheinlichkeit schon geschlagen sein.
-Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Dame befindet.
+Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Dame befindet. Im Verhältnis zum normalen Schach gibt es folgende Änderungen:
 
-## Regeln
+## 1. Figurregeln
 
-### 1. Figurregeln
+1.1. Statt einem Zug kann eine Figur auch halbiert werden, beide Teile können dann in diesem Zug entsprechend den Zugregeln noch auseinanderbewegt werden.
 
-1.1. Statt einem Zug kann ein Teil eine Figur halbiert werden, beide Teile können dann noch auseinanderbewegt werden.
+1.2. Figuren mit einer Existenzwahrscheinlichkeit von weniger als `10%` werden als vernachlässigbar entfernt.
 
-1.2. Der abgespaltene Teil, soweit existent, muss entsprechend der Zugregeln bewegt werden.
+## 2. Zugregeln
 
-1.3. Auch andere Instanzen des desselben Figurtyps (auch die "Restfigur", bzw. die nicht gespaltene Figur) dürfen entsprechend der Zugregeln bewegt werden.
+2.1. Es dürfen stets mehrere Figuren bewegt werden, wenn die Summe ihrer Existenzwahrscheinlichkeiten '100%' nicht übersteigt.
 
-
-### 2. Zugregeln
-
-2.1. In einem Zug darf maximal ein Figurtyp bewegt werden.
-
-2.2. Es dürfen maximal zwei Figurinstanzen bewegt werden.
+2.2. Es besteht Zugzwang, mindestens eine Figur muss bewegt werden.
 
 2.3. Eine Figur mit der Wahrscheinlichkeit `p` darf ein Feld nur überqueren, wenn die Wahrscheinlichkeit, dass dort irgendeine Figur steht (Die ist gleich der Summe der Wahrscheinlichkeiten aller Figuren auf dem Feld) kleiner als `100%-p` ist.
 
@@ -33,7 +28,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 2.7. Die restlichen Bewegungsregeln werden vom normalen Schach übernommen.
 
-### 3. Schlagregeln
+## 3. Schlagregeln
 
 3.1. Sollte auf einem Feld eine Figur mit der Wahrscheinlichkeit `p`, sowie ein oder mehrere andersfarbigen Figuren mit Wahscheinlichkeiten `q(1)`, `q(2)`, ..., `q(n-1)` stehen, so ist nach einem zusätzlichen Draufziehen der Figur mit der anderen Farbe und Wahrscheinlichkeit `q(n)`, die Wahrscheinlichkeitder ersten Figur gleich `p'=p*(100%-q(n)/(100%-q(1) - q(2) - ... - q(n-1)))`.
 
@@ -43,7 +38,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 3.4. Es gibt kein en-passant und keine Rochade.
 
-### 4. Spielende
+## 4. Spielende
 
 4.1. Es gibt weder Schach noch Schachmatt, der König kann entsprechend den Schlagregeln geschlagen werden.
 
