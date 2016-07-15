@@ -45,8 +45,6 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 ### 4. Spielende
 
-4.1. Es gibt weder Schach noch Schachmatt.
+4.1. Es gibt weder Schach noch Schachmatt, der König kann entsprechend den Schlagregeln geschlagen werden.
 
-4.2. Der König kann entsprechend den Schlagregeln geschlagen werden.
-
-4.3. Sollte der König (bzw. alle Königsinstanzen zusammen) die Existenzwahrscheinlichkeit `q ≤ 100%` haben, so ist die Wahrscheinlichkeit in diesem Zug automatisch zu verlieren `100%-q`.
+4.2. Sollte der König (bzw. alle Königsinstanzen zusammen) die Existenzwahrscheinlichkeit `q ≤ 100%` haben, so ist die Wahrscheinlichkeit in diesem Zug automatisch zu verlieren `100%-q`.
