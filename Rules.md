@@ -35,7 +35,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 ### 3. Schlagregeln
 
-3.1. Sollte auf einem Feld eine Figur mit der Wahrscheinlichkeit `p`, sowie ein oder mehrere andersfarbigen Figuren mit Wahscheinlichkeiten `q(1)`, `q(2)`, ..., `q(n-1)` stehen, so ist nach einem zusätzlichen Draufziehen der Figur mit der anderen Farbe und Wahrscheinlichkeit `q(n)`, die Wahrscheinlichkeitder ersten Figur gleich `p'=p*(100%-q(n)/(100%-q(1) + q(2) - ... - q(n-1)))`.
+3.1. Sollte auf einem Feld eine Figur mit der Wahrscheinlichkeit `p`, sowie ein oder mehrere andersfarbigen Figuren mit Wahscheinlichkeiten `q(1)`, `q(2)`, ..., `q(n-1)` stehen, so ist nach einem zusätzlichen Draufziehen der Figur mit der anderen Farbe und Wahrscheinlichkeit `q(n)`, die Wahrscheinlichkeitder ersten Figur gleich `p'=p*(100%-q(n)/(100%-q(1) - q(2) - ... - q(n-1)))`.
 
 3.2. Sollten mehrere Figuren einer Farbe von einer oder mehreren Figuren angegriffen werden, so werden für die anzugreifenden Figuren die Regeln 3\.1\. bzw. 3\.2\. getrennt angewandt.
 
