@@ -41,7 +41,7 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 3.3. Sollte eine Figur oder ein Figurteil unter `10%` Existenzwahrscheinlichkeit fallen, so wird die Figur bzw. dieser Figurteil aus dem Spiel entfernt.
 
-3.4. Es gibt keine en-passant-Züge.
+3.4. Es gibt kein en-passant und keine Rochade.
 
 ### 4. Spielende
 
