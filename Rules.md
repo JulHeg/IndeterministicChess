@@ -21,19 +21,17 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 2.1. In einem Zug darf maximal ein Figurtyp bewegt werden.
 
-2.2. Es dürfen nur Figuren mit maximal 100% Gesamtwahrscheinlichkeit bewegt werden, es gilt **kein** Zugzwang (Wenn sich beide Spieler drei Runden lang nicht bewegen, ist Patt).
+2.2. Es dürfen maximal zwei Figurinstanzen bewegt werden.
 
-2.3. Es dürfen maximal zwei Figurinstanzen bewegt werden.
+2.3. Eine Figur mit der Wahrscheinlichkeit _n_ darf ein Feld nur überqueren, wenn die Wahrscheinlichkeit, dass dort irgendeine Figur steht (Die ist gleich der Summe der Wahrscheinlichkeiten aller Figuren auf dem Feld) kleiner als _100%-n_ ist.
 
-2.4. Eine Figur mit der Wahrscheinlichkeit _n_ darf ein Feld nur überqueren, wenn die Wahrscheinlichkeit, dass dort irgendeine Figur steht (Die ist gleich der Summe der Wahrscheinlichkeiten aller Figuren auf dem Feld) kleiner als _100%-n_ ist.
+2.4. Gleiche Figuren können ihre Teile wieder zusammensetzen, indem sie auf dasselbe Feld ziehen. Haben die beiden Teile die Wahrscheinlichkeiten _p_ und _q_, so hat die entstehende Figur die Wahrscheinlichkeit _p+q_ zu existieren. Auch mehr als zwei Figuren können sich über eine solche Addition kombinieren.
 
-2.5. Gleiche Figuren können ihre Teile wieder zusammensetzen, indem sie auf dasselbe Feld ziehen. Haben die beiden Teile die Wahrscheinlichkeiten _p_ und _q_, so hat die entstehende Figur die Wahrscheinlichkeit _p+q_ zu existieren. Auch mehr als zwei Figuren können sich über eine solche Addition kombinieren.
+2.5. Die Summe aller Wahrscheinlichkeiten von Figuren einer Farbe auf einem Feld darf 100% nicht übersteigen.
 
-2.6. Die Summe aller Wahrscheinlichkeiten von Figuren einer Farbe auf einem Feld darf 100% nicht übersteigen.
+2.6. Sollte ein Bauer mit Wahrscheinlichkeit _p_ die gegnerische Grundlinie erreichen, so darf sich in eine beliebige Figur (außer einem König) mit der Existenzwahrscheinlichkeit _p_ verwandeln.
 
-2.7. Sollte ein Bauer mit Wahrscheinlichkeit _p_ die gegnerische Grundlinie erreichen, so darf sich in eine beliebige Figur (außer einem König) mit der Existenzwahrscheinlichkeit _p_ verwandeln.
-
-2.8. Die restlichen Bewegungsregeln werden vom normalen Schach übernommen.
+2.7. Die restlichen Bewegungsregeln werden vom normalen Schach übernommen.
 
 ### 3. Schlagregeln
 
