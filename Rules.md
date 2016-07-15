@@ -41,9 +41,9 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine 10%-Dame
 
 3.2. Sollten mehrere Figuren einer Farbe von einer oder mehreren Figuren angegriffen werden, so werden für die anzugreifenden Figuren die Regeln 3\.1\. bzw. 3\.2\. getrennt angewandt.
 
-3.4. Sollte eine Figur oder ein Figurteil unter 10% Existenzwahrscheinlichkeit fallen, so wird die Figur bzw. dieser Figurteil aus dem Spiel entfernt.
+3.3. Sollte eine Figur oder ein Figurteil unter 10% Existenzwahrscheinlichkeit fallen, so wird die Figur bzw. dieser Figurteil aus dem Spiel entfernt.
 
-3.5. Es gibt keine en-passant-Züge.
+3.4. Es gibt keine en-passant-Züge.
 
 ### 4. Spielende
 
