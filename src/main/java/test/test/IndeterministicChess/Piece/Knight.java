@@ -18,7 +18,7 @@ public class Knight extends Piece {
 		super(piece);
 	}
 	
-	public String getName() {
+	public String getTypeName() {
 		return "Knight";
 	}
 

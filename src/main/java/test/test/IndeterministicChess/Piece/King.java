@@ -5,7 +5,7 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class King extends Piece {
-	public String getName() {
+	public String getTypeName() {
 		return "King";
 	}
 

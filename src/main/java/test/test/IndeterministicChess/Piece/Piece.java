@@ -5,8 +5,6 @@ package test.test.IndeterministicChess.Piece;
 
 import java.util.*;
 
-import org.apache.commons.math3.fraction.BigFraction;
-
 import test.test.IndeterministicChess.Board.Chessboard;
 import test.test.IndeterministicChess.Board.Square;
 
@@ -21,7 +19,7 @@ public abstract class Piece {
 
 	private ExistenceProbability existanceProbability;
 
-	public abstract String getName();
+	public abstract String getTypeName();
 
 	public final Chessboard chessboard = Chessboard.getInstance();
 
@@ -29,16 +27,14 @@ public abstract class Piece {
 		this(position, owner, ExistenceProbability.ONE);
 	}
 
+	public Piece(Piece original) {
+		this(original.position, original.owner, original.existanceProbability);
+	}
+
 	public Piece(Square position, PieceColor owner, ExistenceProbability existanceProbability) {
 		this.position = position;
 		this.owner = owner;
 		this.existanceProbability = existanceProbability;
-	}
-
-	public Piece(Piece original) {
-		this.position = original.position;
-		this.owner = original.owner;
-		this.existanceProbability = original.existanceProbability;
 	}
 	
 	public void setProbabilityToFull(){
@@ -64,6 +60,10 @@ public abstract class Piece {
 
 	public ExistenceProbability getExistanceProbability() {
 		return existanceProbability;
+	}
+
+	public void setExistanceProbability(ExistenceProbability existanceProbability) {
+		this.existanceProbability = existanceProbability;
 	}
 
 	public void moveTo(Square destination) {
@@ -101,11 +101,7 @@ public abstract class Piece {
 		return results;
 	}
 
-	public void multiplieProbibilityBy(BigFraction multiplier) {
-		existanceProbability = existanceProbability.multiply(multiplier);
-	}
-
 	public void incorporatePiece(Piece other) {
-		existanceProbability = existanceProbability.add(other.getExistanceProbability().getProbability());
+		existanceProbability = existanceProbability.add(other.getExistanceProbability());
 	}
 }

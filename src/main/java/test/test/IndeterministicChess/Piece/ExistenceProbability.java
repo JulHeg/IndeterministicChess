@@ -99,11 +99,15 @@ public class ExistenceProbability {
 		return probability.compareTo(other) < +1;
 	}
 
-	public ExistenceProbability multiply(BigFraction other) {
-		return new ExistenceProbability(probability.multiply(other));
+	public ExistenceProbability multiply(ExistenceProbability other) {
+		return new ExistenceProbability(probability.multiply(other.getProbability()));
 	}
 
-	public ExistenceProbability add(BigFraction other) {
-		return new ExistenceProbability(probability.add(other));
+	public ExistenceProbability add(ExistenceProbability other) {
+		return new ExistenceProbability(probability.add(other.getProbability()));
+	}
+
+	public ExistenceProbability divide(ExistenceProbability other) {
+		return new ExistenceProbability(probability.add(other.getProbability()));
 	}
 }

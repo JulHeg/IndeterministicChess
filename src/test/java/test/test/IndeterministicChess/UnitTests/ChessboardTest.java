@@ -27,22 +27,6 @@ public class ChessboardTest {
 		assertTrue(chessboard.getSize() == 8);
 	}
 
-	@Test
-	public void testGetSquareAt() throws Exception {
-		for (int x = 1; x <= chessboard.getSize(); x++) {
-			for (int y = 1; y <= chessboard.getSize(); y++) {
-				Square square = chessboard.getSquareAt(x, y);
-				assertTrue(square.getXPosition() == x);
-				assertTrue(square.getYPosition() == y);
-			}
-		}
-		try {
-			chessboard.getSquareAt(-1, 2);
-			fail();
-		} catch (Exception e) {
-		}
-	}
-
 	/*@Test
 	public void testGetPieceAt() throws Exception {
 		for(int x = 1; x <= chessboard.getSize(); x++)

@@ -5,6 +5,10 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Queen extends Piece {
+	
+	public String getTypeName() {
+		return "Queen";
+	}
 	public Queen(Square square, PieceColor owner) {
 		super(square, owner);
 	}
@@ -15,10 +19,6 @@ public class Queen extends Piece {
 
 	public Queen(Piece piece) {
 		super(piece);
-	}
-	
-	public String getName() {
-		return "Queen";
 	}
 
 	public Set<Square> getPossibleNextSquares() {

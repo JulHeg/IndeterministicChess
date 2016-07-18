@@ -13,13 +13,15 @@ import test.test.IndeterministicChess.Piece.*;
 public class CompleteChessboardTestCase {
 	
 	//The example that is tested
-	Chessboard chessboard = Chessboard.getInstance();
+	Chessboard chessboard;
 	Pawn pawn = new Pawn(new Square(4, 3), PieceColor.WHITE, ExistenceProbability.ONE.getHalf());
 	Queen queen = new Queen(new Square(3, 4), PieceColor.BLACK, ExistenceProbability.ONE);
 	Knight knight = new Knight(new Square(4, 4), PieceColor.BLACK, ExistenceProbability.ONE.getHalf());
 	
 	@Before
 	public void setUp() throws Exception {
+		chessboard = Chessboard.getInstance();
+		chessboard.clear();
 		chessboard.addChessPiece(pawn);
 		chessboard.addChessPiece(queen);
 		chessboard.addChessPiece(knight);

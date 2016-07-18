@@ -3,8 +3,6 @@ package test.test.IndeterministicChess.Board;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.apache.commons.math3.fraction.BigFraction;
-
 import com.google.common.collect.*;
 
 import test.test.IndeterministicChess.Piece.*;
@@ -38,14 +36,6 @@ public class Chessboard {
 		}
 		squares = builder.build();
 		allPieces = new HashSet<Piece>();
-	}
-
-	public Square getSquareAt(int xPosition, int yPosition) throws Exception {
-		Square result = squares.get(xPosition, yPosition);
-		if (result == null) {
-			throw new Exception("The square is outside of the playing field!");
-		}
-		return result;
 	}
 
 	public Set<Piece> getPiecesOnSquare(Square square, PieceColor color) {
@@ -86,10 +76,45 @@ public class Chessboard {
 		}
 		allPieces.add(piece);
 	}
+	
+	public void clear(){
+		allPieces.clear();
+	}
+	
+	public void removePiece(Piece piece){
+		allPieces.remove(piece);
+	}
 
 	public static Chessboard getInstance() {
 		if (currentChessboard == null) {
-			currentChessboard = new Chessboard(8);
+			try{
+				currentChessboard = new Chessboard(8);
+				//Add pawns
+				for(int i = 1; i <= 8; i++){
+					currentChessboard.addChessPiece(new Pawn(new Square(i,2), PieceColor.WHITE));
+					currentChessboard.addChessPiece(new Pawn(new Square(i,7), PieceColor.BLACK));
+				}
+				//Add rest
+				currentChessboard.addChessPiece(new Queen(new Square(4,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new Queen(new Square(4,8), PieceColor.BLACK));
+				currentChessboard.addChessPiece(new King(new Square(5,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new King(new Square(5,8), PieceColor.BLACK));
+				currentChessboard.addChessPiece(new Bishop(new Square(3,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new Bishop(new Square(3,8), PieceColor.BLACK));
+				currentChessboard.addChessPiece(new Bishop(new Square(6,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new Bishop(new Square(6,8), PieceColor.BLACK));
+				currentChessboard.addChessPiece(new Knight(new Square(2,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new Knight(new Square(2,8), PieceColor.BLACK));
+				currentChessboard.addChessPiece(new Knight(new Square(7,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new Knight(new Square(7,8), PieceColor.BLACK));
+				currentChessboard.addChessPiece(new Rook(new Square(1,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new Rook(new Square(1,8), PieceColor.BLACK));
+				currentChessboard.addChessPiece(new Rook(new Square(8,1), PieceColor.WHITE));
+				currentChessboard.addChessPiece(new Rook(new Square(8,8), PieceColor.BLACK));
+			}
+			catch(Exception e){
+				throw new Error("The chessboard couldn't be properly constructed.");
+			}
 		}
 		return currentChessboard;
 	}
@@ -106,17 +131,28 @@ public class Chessboard {
 		if (isInBoard(target)) {
 			throw new Exception("Ziel liegt nicht im Brett!");
 		}
-		ExistenceProbability totalProbabilityOfThisColorBefore = ProbabilityOn(target, piece.getPieceColor());
-		BigFraction mulitplier = BigFraction.ONE.subtract(piece.getExistanceProbability().getProbability()
-				.divide(totalProbabilityOfThisColorBefore.getRest().getProbability()));// 1-(newestPiece/(1-oldPieces))
+		ExistenceProbability totalProbabilityOfOtherColorBefore = ProbabilityOn(target, piece.getPieceColor().otherColor());
+		//=1-max{0,1-newPiece/oldPieces}=1-min{1,newPiece/totalProbabilityOfOtherColorBefore}
+		ExistenceProbability mulitplier = piece.getExistanceProbability()
+				.divide(totalProbabilityOfOtherColorBefore).cap(ExistenceProbability.ONE).getRest();
 		// Partially take enemy pieces
 		for (Piece enemyPiece : getPiecesOnSquare(target, piece.getPieceColor().otherColor())) {
-			enemyPiece.getExistanceProbability().multiply(mulitplier);
-		}
-		for (Piece enemyPiece : getPiecesOnSquare(target, piece.getPieceColor())) {
-			enemyPiece.getExistanceProbability().multiply(mulitplier);
+			reducePiece(enemyPiece,mulitplier);
 		}
 		piece.setPosition(target);
+	}
+	
+	public void reducePiece(Piece piece, ExistenceProbability multiplier) throws Exception{
+		if(!getAllPieces().contains(piece)){
+			throw new Exception("Taken piece is not actually on the board!");
+		}
+		ExistenceProbability newProbability = piece.getExistanceProbability().multiply(multiplier);
+		if(newProbability.isDead()){
+			removePiece(piece);
+		}
+		else{
+			piece.setExistanceProbability(newProbability);
+		}
 	}
 	
 	public Set<Pawn> getPawnsToBePromotion() {
@@ -131,6 +167,23 @@ public class Chessboard {
 		return result;
 	}
 	
+	public void combinePieces() {
+		for(Square square : squares.values()){
+			for(PieceColor color : PieceColor.values()){
+				Set<Piece> pieces = getPiecesOnSquare(square, color);
+				for(String type : pieces.stream().map(Piece::getTypeName).collect(Collectors.toSet())){
+					List<Piece> fittingPieces = pieces.stream().filter(piece -> piece.getTypeName() == type).collect(Collectors.toList());
+					if(fittingPieces.size() > 1){
+						for(int i = 1; i < fittingPieces.size(); i++){//Iterate without first element
+							fittingPieces.get(0).incorporatePiece(fittingPieces.get(i));
+							removePiece(fittingPieces.get(i));
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public void redetermine() {
 		Set<Piece> newPieces = new HashSet<Piece>();
 		for(Piece piece : getAllPieces()){
@@ -139,7 +192,32 @@ public class Chessboard {
 				newPieces.add(piece);
 			}
 		}
-		allPieces.removeAll(allPieces);
+		clear();
 		allPieces.addAll(newPieces);
+	}
+	
+	public static final String[] promotionPositions = {"Knight","Bishop","Rook","Queen"};
+
+	public void promotePawn(Pawn pawn, String position) throws Exception{
+		if(!allPieces.contains(pawn)){
+			throw new Exception("The promoted pawn is not atctually on the board!");
+		}
+		allPieces.remove(pawn);
+		switch (position) {
+		case "Knight":
+			addChessPiece(new Knight(pawn));
+			break;
+		case "Bishop":
+			addChessPiece(new Bishop(pawn));
+			break;
+		case "Rook":
+			addChessPiece(new Rook(pawn));
+			break;
+		case "Queen":
+			addChessPiece(new Queen(pawn));
+			break;
+		default:
+			throw new Exception("The new type for the promoted pawn is not supported!");
+		}
 	}
 }

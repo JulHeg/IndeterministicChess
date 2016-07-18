@@ -5,7 +5,7 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Pawn extends Piece {
-	public String getName() {
+	public String getTypeName() {//Unique identifier of each subclass
 		return "Pawn";
 	}
 
