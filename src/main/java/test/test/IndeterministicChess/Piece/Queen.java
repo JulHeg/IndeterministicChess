@@ -9,6 +9,11 @@ public class Queen extends Piece {
 	public String getTypeName() {
 		return "Queen";
 	}
+	
+	public String getSymbol() {
+		return getPieceColor() == PieceColor.WHITE ? "♕" : "♛";
+	}
+	
 	public Queen(Square square, PieceColor owner) {
 		super(square, owner);
 	}

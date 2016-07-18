@@ -8,6 +8,10 @@ public class King extends Piece {
 	public String getTypeName() {
 		return "King";
 	}
+	
+	public String getSymbol() {
+		return getPieceColor() == PieceColor.WHITE ? "♔" : "♚";
+	}
 
 	public King(Square square, PieceColor owner) {
 		super(square, owner);

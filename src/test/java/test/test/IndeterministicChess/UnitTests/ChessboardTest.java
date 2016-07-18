@@ -27,46 +27,6 @@ public class ChessboardTest {
 		assertTrue(chessboard.getSize() == 8);
 	}
 
-	/*@Test
-	public void testGetPieceAt() throws Exception {
-		for(int x = 1; x <= chessboard.getSize(); x++)
-		{
-			for(int y = 1; y <= chessboard.getSize(); y++)
-			{
-				PiecePart piece = chessboard.getPiecePartsAt(x, y);
-				if(!chessboard.isSquareFree(new Square(x,y))){
-					assertTrue(piece.getPosition().getXPosition() == x);
-					assertTrue(piece.getPosition().getYPosition() == y);
-				}
-			}
-		}
-		try{
-			chessboard.getPiecePartsAt(-1,3);
-			//fail();
-		}
-		catch(Exception e) {}
-	}*/
-
-	/*@Test
-	public void testGetPieceOnSquare() {
-		for(int x = 1; x <= chessboard.getSize(); x++)
-		{
-			for(int y = 1; y <= chessboard.getSize(); y++)
-			{
-				PiecePart piece = chessboard.getPiecePartsOnSquare(new Square(x, y));
-				if(!chessboard.isSquareFree(new Square(x,y))){
-					assertTrue(piece.getPosition().getXPosition() == x);
-					assertTrue(piece.getPosition().getYPosition() == y);
-				}
-			}
-		}
-		try{
-			chessboard.getPiecePartsAt(-1,3);
-			//fail();
-		}
-		catch(Exception e) {}
-	}*/
-
 	@Test
 	public void testIsInBoard() {
 		Random random = new Random();

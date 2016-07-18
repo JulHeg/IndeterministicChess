@@ -19,7 +19,9 @@ public abstract class Piece {
 
 	private ExistenceProbability existanceProbability;
 
-	public abstract String getTypeName();
+	public abstract String getTypeName();//Unique Identifier
+	
+	public abstract String getSymbol();
 
 	public final Chessboard chessboard = Chessboard.getInstance();
 

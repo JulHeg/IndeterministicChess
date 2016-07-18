@@ -32,7 +32,7 @@ public class ExistenceProbability {
 		return probability;
 	}
 
-	public double getProbabilityAsDouble() {
+	public double asDouble() {
 		return probability.doubleValue();
 	}
 

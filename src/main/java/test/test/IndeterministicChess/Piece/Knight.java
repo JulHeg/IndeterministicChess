@@ -9,6 +9,10 @@ public class Knight extends Piece {
 	public Knight(Square square, PieceColor owner) {
 		super(square, owner);
 	}
+	
+	public String getSymbol() {
+		return getPieceColor() == PieceColor.WHITE ? "♘" : "♞";
+	}
 
 	public Knight(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
 		super(square, owner, existenceProbability);

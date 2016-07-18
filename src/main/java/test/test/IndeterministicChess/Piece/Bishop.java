@@ -5,10 +5,14 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Bishop extends Piece {
-	
 	public String getTypeName() {
 		return "Bishop";
 	}
+	
+	public String getSymbol() {
+		return getPieceColor() == PieceColor.WHITE ? "♗" : "♝";
+	}
+	
 	public Bishop(Square square, PieceColor owner) {
 		super(square, owner);
 	}

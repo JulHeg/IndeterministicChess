@@ -5,9 +5,12 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Rook extends Piece {
-	
 	public String getTypeName() {
 		return "Rook";
+	}
+	
+	public String getSymbol() {
+		return getPieceColor() == PieceColor.WHITE ? "♖" : "♜";
 	}
 
 	public Rook(Square square, PieceColor owner) {

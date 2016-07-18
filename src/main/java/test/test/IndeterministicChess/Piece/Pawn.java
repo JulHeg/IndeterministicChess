@@ -8,6 +8,10 @@ public class Pawn extends Piece {
 	public String getTypeName() {//Unique identifier of each subclass
 		return "Pawn";
 	}
+	
+	public String getSymbol() {
+		return getPieceColor() == PieceColor.WHITE ? "♙" : "♟";
+	}
 
 	public Pawn(Square square, PieceColor owner) {
 		super(square, owner);

@@ -187,7 +187,7 @@ public class Chessboard {
 	public void redetermine() {
 		Set<Piece> newPieces = new HashSet<Piece>();
 		for(Piece piece : getAllPieces()){
-			if(random.nextDouble() < piece.getExistanceProbability().getProbabilityAsDouble()){
+			if(random.nextDouble() < piece.getExistanceProbability().asDouble()){
 				piece.setProbabilityToFull();
 				newPieces.add(piece);
 			}
@@ -219,5 +219,34 @@ public class Chessboard {
 		default:
 			throw new Exception("The new type for the promoted pawn is not supported!");
 		}
+	}
+	
+
+	public String toProbabilisticString() {
+		String result = "";
+		for(int y = 1; y <= getSize(); y++){
+			for(int x = 1; x <= getSize(); x++){
+				result += getRandomSymbolOn(new Square(x,y));
+			}
+			result += "\n";
+		}
+		return result;
+	}
+	
+	public String getRandomSymbolOn(Square square){
+		String resultingSymbol = "";
+		double cumulativeProbability = 0;
+		double randomValue = random.nextDouble();
+		for(Piece piece : getPiecesOnSquare(square)){
+			if(cumulativeProbability <= randomValue && randomValue <= cumulativeProbability + piece.getExistanceProbability().asDouble()){
+				resultingSymbol = piece.getSymbol();
+				break;
+			}
+			cumulativeProbability += piece.getExistanceProbability().asDouble();
+		}
+		if(resultingSymbol.isEmpty()){
+			resultingSymbol = " ";
+		}
+		return resultingSymbol;
 	}
 }
