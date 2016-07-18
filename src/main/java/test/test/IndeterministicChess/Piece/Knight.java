@@ -5,12 +5,21 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Knight extends Piece {
-	public String getName() {
-		return "Knight";
-	}
 
 	public Knight(Square square, PieceColor owner) {
 		super(square, owner);
+	}
+
+	public Knight(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
+		super(square, owner, existenceProbability);
+	}
+
+	public Knight(Piece piece) {
+		super(piece);
+	}
+	
+	public String getName() {
+		return "Knight";
 	}
 
 	public Set<Square> getPossibleNextSquares() {

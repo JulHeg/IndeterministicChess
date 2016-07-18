@@ -10,7 +10,9 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 1.1. Statt einem Zug kann eine Figur auch halbiert werden, beide Teile können dann in diesem Zug entsprechend den Zugregeln noch auseinanderbewegt werden.
 
-1.2. Figuren mit einer Existenzwahrscheinlichkeit von weniger als `10%` werden als vernachlässigbar entfernt.
+1.2. Statt einem Zug kann der „Bei bestimmen“-Knopf gedrückt werden. Durch ihn wird jede Figur, die hier die Wahrscheinlichkeit 'p' habe, mit der Wahrscheinlichkeit 'p' wieder mit '100%'-iger Wahrscheinlichkeit entstehen und mit der Wahrscheinlichkeit '100%-p'  verschwinden.
+
+1.3. Figuren mit einer Existenzwahrscheinlichkeit von weniger als `10%` werden als vernachlässigbar entfernt.
 
 ## 2. Zugregeln
 
@@ -30,11 +32,11 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 ## 3. Schlagregeln
 
-3.1. Sollte auf einem Feld eine Figur mit der Wahrscheinlichkeit `p`, sowie ein oder mehrere andersfarbigen Figuren mit Wahscheinlichkeiten `q(1)`, `q(2)`, ..., `q(n-1)` stehen, so ist nach einem zusätzlichen Draufziehen der Figur mit der anderen Farbe und Wahrscheinlichkeit `q(n)`, die Wahrscheinlichkeitder ersten Figur gleich `p'=p*(100%-q(n)/(100%-q(1) - q(2) - ... - q(n-1)))`.
+3.1. Sollte auf einem Feld eine Figur mit der Wahrscheinlichkeit `p`, sowie ein oder mehrere andersfarbigen Figuren mit Wahrscheinlichkeiten `q(1)`, `q(2)`, ..., `q(n-1)` stehen, so ist nach einem zusätzlichen Draufziehen der Figur mit der anderen Farbe und Wahrscheinlichkeit `q(n)`, die Wahrscheinlichkeitbder ersten Figur gleich `p'=p*(100%-q(n)/(100%-q(1) - q(2) - ... - q(n-1)))`.
 
 3.2. Sollten mehrere Figuren einer Farbe von einer oder mehreren Figuren angegriffen werden, so werden für die anzugreifenden Figuren die Regeln 3\.1\. bzw. 3\.2\. getrennt angewandt.
 
-3.3. Sollte eine Figur oder ein Figurteil unter `10%` Existenzwahrscheinlichkeit fallen, so wird die Figur bzw. dieser Figurteil aus dem Spiel entfernt.
+3.3. Sollte eine Figur oder ein Figurteil unter `10%` Existenzwahrscheinlichkeit fallen, so wird die Figur aus dem Spiel entfernt.
 
 3.4. Es gibt kein en-passant und keine Rochade.
 

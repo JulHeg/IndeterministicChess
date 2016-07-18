@@ -40,6 +40,10 @@ public abstract class Piece {
 		this.owner = original.owner;
 		this.existanceProbability = original.existanceProbability;
 	}
+	
+	public void setProbabilityToFull(){
+		existanceProbability = ExistenceProbability.ONE;
+	}
 
 	@Override
 	public Piece clone() {
@@ -88,6 +92,10 @@ public abstract class Piece {
 				results.add(square);
 			} else {
 				break;
+			}
+			ExistenceProbability enemyProbability = chessboard.ProbabilityOn(square, getPieceColor().otherColor());
+			if(!enemyProbability.equals(ExistenceProbability.ZERO)){
+				runningMin = runningMin.cap(enemyProbability);
 			}
 		}
 		return results;

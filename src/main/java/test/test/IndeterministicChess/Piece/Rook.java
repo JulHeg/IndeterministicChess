@@ -5,12 +5,21 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Rook extends Piece {
-	public String getName() {
-		return "Rook";
-	}
 
 	public Rook(Square square, PieceColor owner) {
 		super(square, owner);
+	}
+
+	public Rook(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
+		super(square, owner, existenceProbability);
+	}
+
+	public Rook(Piece piece) {
+		super(piece);
+	}
+	
+	public String getName() {
+		return "Rook";
 	}
 
 	public Set<Square> getPossibleNextSquares() {

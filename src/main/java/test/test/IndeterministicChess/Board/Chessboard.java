@@ -15,6 +15,8 @@ import test.test.IndeterministicChess.Piece.*;
 public class Chessboard {
 
 	private static Chessboard currentChessboard = getInstance();
+	
+	private Random random = new Random();
 
 	private final int size;
 
@@ -22,7 +24,7 @@ public class Chessboard {
 		return size;
 	}
 
-	private final List<Piece> allPieces;
+	private final Set<Piece> allPieces;
 
 	private final Table<Integer, Integer, Square> squares;
 
@@ -35,7 +37,7 @@ public class Chessboard {
 			}
 		}
 		squares = builder.build();
-		allPieces = new ArrayList<Piece>();
+		allPieces = new HashSet<Piece>();
 	}
 
 	public Square getSquareAt(int xPosition, int yPosition) throws Exception {
@@ -127,5 +129,17 @@ public class Chessboard {
 			}
 		}
 		return result;
+	}
+	
+	public void redetermine() {
+		Set<Piece> newPieces = new HashSet<Piece>();
+		for(Piece piece : getAllPieces()){
+			if(random.nextDouble() < piece.getExistanceProbability().getProbabilityAsDouble()){
+				piece.setProbabilityToFull();
+				newPieces.add(piece);
+			}
+		}
+		allPieces.removeAll(allPieces);
+		allPieces.addAll(newPieces);
 	}
 }

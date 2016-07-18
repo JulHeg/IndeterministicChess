@@ -1,4 +1,4 @@
-package test.test.IndeterministicChess.Board;
+package test.test.IndeterministicChess.UnitTests;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,8 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
+import test.test.IndeterministicChess.Board.Chessboard;
+import test.test.IndeterministicChess.Board.Square;
 import test.test.IndeterministicChess.Piece.Pawn;
 import test.test.IndeterministicChess.Piece.PieceColor;
 

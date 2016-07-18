@@ -32,12 +32,19 @@ public class ExistenceProbability {
 		return probability;
 	}
 
-	public BigFraction getProbabilityAsDouble() {
-		return probability;
+	public double getProbabilityAsDouble() {
+		return probability.doubleValue();
 	}
 
 	public boolean isDead() {
 		return lessEqual(ONE_TENTH);
+	}
+	
+
+
+	@Override
+	public int hashCode() {
+		return probability.getNumerator().hashCode() ^ probability.getDenominator().hashCode();
 	}
 
 	@Override
@@ -54,7 +61,7 @@ public class ExistenceProbability {
 	}
 
 	public static ExistenceProbability sumProbability(Set<ExistenceProbability> summands) {
-		BigFraction result = BigFraction.ONE;
+		BigFraction result = BigFraction.ZERO;
 		for (ExistenceProbability summand : summands) {
 			result = result.add(summand.getProbability());
 		}

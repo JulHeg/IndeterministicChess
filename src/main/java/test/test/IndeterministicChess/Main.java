@@ -1,7 +1,7 @@
 package test.test.IndeterministicChess;
 
 /**
- * Hopefully this will become the start for the new backend of the new game!
+ * Hopefully this will become the start for the new back end of the new game!
  * 
  */
 public class Main {

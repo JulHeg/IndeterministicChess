@@ -5,12 +5,20 @@ import java.util.*;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Bishop extends Piece {
-	public String getName() {
-		return "Bishop";
-	}
-
 	public Bishop(Square square, PieceColor owner) {
 		super(square, owner);
+	}
+
+	public Bishop(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
+		super(square, owner, existenceProbability);
+	}
+
+	public Bishop(Piece piece) {
+		super(piece);
+	}
+	
+	public String getName() {
+		return "Bishop";
 	}
 
 	public Set<Square> getPossibleNextSquares() {

@@ -13,11 +13,18 @@ public class Pawn extends Piece {
 		super(square, owner);
 	}
 
+	public Pawn(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
+		super(square, owner, existenceProbability);
+	}
+
+	public Pawn(Piece piece) {
+		super(piece);
+	}
+
 	@Override
 	public Set<Square> getPossibleNextSquares() {
 		Set<Square> results = new HashSet<Square>();
 		int direction = getPieceColor() == PieceColor.WHITE ? 1 : -1;
-
 		int x = getPosition().getXPosition();
 		int y = getPosition().getYPosition();
 		Square square1 = new Square(x, y + direction);

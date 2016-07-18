@@ -25,6 +25,11 @@ public class Square {
 	}
 
 	@Override
+	public int hashCode() {
+		return ((Integer)getXPosition()).hashCode() ^ ((Integer)getYPosition()).hashCode();
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Square) {
 			Square otherSquare = (Square) other;
@@ -33,5 +38,10 @@ public class Square {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "(" + getXPosition() + "," + getYPosition() + ")";
 	}
 }
