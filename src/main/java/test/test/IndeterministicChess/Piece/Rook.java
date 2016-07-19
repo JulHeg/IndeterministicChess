@@ -25,6 +25,10 @@ public class Rook extends Piece {
 		super(piece);
 	}
 
+	protected Rook quasiClone() {
+		return new Rook(this);
+	}
+
 	public Set<Square> getPossibleNextSquares() {
 		Set<Square> results = new HashSet<Square>();
 		int[] signs = { -1, 0, 1 };

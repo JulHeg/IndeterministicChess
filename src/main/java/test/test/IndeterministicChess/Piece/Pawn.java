@@ -25,6 +25,10 @@ public class Pawn extends Piece {
 		super(piece);
 	}
 
+	protected Pawn quasiClone() {
+		return new Pawn(this);
+	}
+
 	@Override
 	public Set<Square> getPossibleNextSquares() {
 		Set<Square> results = new HashSet<Square>();

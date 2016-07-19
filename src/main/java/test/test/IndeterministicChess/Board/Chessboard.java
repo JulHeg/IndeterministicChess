@@ -123,6 +123,10 @@ public class Chessboard {
 		return new HashSet<Piece>(allPieces);
 	}
 
+	public Set<Piece> getAllPiecesOf(PieceColor player) {
+		return getAllPieces().stream().filter(piece -> piece.getPieceColor() == player).collect(Collectors.toSet());
+	}
+
 	public void movePiece(Piece piece, Square target) throws Exception {
 		if (!piece.getPossibleNextSquares().contains(target)) {
 			// Just to be sure, shouldn't be necessary.
@@ -155,12 +159,12 @@ public class Chessboard {
 		}
 	}
 	
-	public Set<Pawn> getPawnsToBePromotion() {
+	public Set<Pawn> getPawnsToBePromoted() {
 		Set<Pawn> result = new HashSet<Pawn>();
 		for(Piece piece : getAllPieces()){
-			Pawn asPawn = (Pawn) piece;
-			int xPosition = asPawn.getPosition().getYPosition();
-			if(piece instanceof Pawn && (xPosition == 1 || xPosition == getSize())){
+			int yPosition = piece.getPosition().getYPosition();
+			if(piece instanceof Pawn && (yPosition == 1 || yPosition == getSize())){
+				Pawn asPawn = (Pawn) piece;
 				result.add(asPawn);
 			}
 		}
@@ -199,7 +203,7 @@ public class Chessboard {
 	
 	public static final String[] promotionPositions = {"Knight","Bishop","Rook","Queen"};
 
-	public void promotePawn(Pawn pawn, String position) throws Exception{
+	public void changeRole(Pawn pawn, String position) throws Exception{
 		if(!allPieces.contains(pawn)){
 			throw new Exception("The promoted pawn is not atctually on the board!");
 		}
@@ -213,6 +217,12 @@ public class Chessboard {
 			break;
 		case "Rook":
 			addChessPiece(new Rook(pawn));
+			break;
+		case "Pawn":
+			addChessPiece(new Pawn(pawn));
+			break;
+		case "King":
+			addChessPiece(new King(pawn));
 			break;
 		case "Queen":
 			addChessPiece(new Queen(pawn));
@@ -245,14 +255,19 @@ public class Chessboard {
 	}
 	
 	public Piece getProbabilisticPieceOn(Square square){
-	double cumulativeProbability = 0;
-	double randomValue = random.nextDouble();
-	for(Piece piece : getPiecesOnSquare(square)){
-		if(cumulativeProbability <= randomValue && randomValue <= cumulativeProbability + piece.getExistanceProbability().asDouble()){
-			return piece;
+		double cumulativeProbability = 0;
+		double randomValue = random.nextDouble();
+		for(Piece piece : getPiecesOnSquare(square)){
+			if(cumulativeProbability <= randomValue && randomValue <= cumulativeProbability + piece.getExistanceProbability().asDouble()){
+				return piece;
+			}
+			cumulativeProbability += piece.getExistanceProbability().asDouble();
 		}
-		cumulativeProbability += piece.getExistanceProbability().asDouble();
+		return null;
 	}
-	return null;
+	
+	public boolean probabilisticHasLost(PieceColor player){
+		double totalKingProbability = ExistenceProbability.sumProbability(getAllPiecesOf(player).stream().filter(piece -> piece instanceof King).map(Piece::getExistanceProbability).collect(Collectors.toSet())).asDouble();
+		return random.nextDouble() > totalKingProbability;
 	}
 }

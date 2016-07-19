@@ -105,16 +105,20 @@ public abstract class Piece {
 	public boolean canMove(){
 		return !getPossibleNextSquares().isEmpty();
 	}
+	
+	protected abstract Piece quasiClone();
 
 	public void incorporatePiece(Piece other) {
 		existanceProbability = existanceProbability.add(other.getExistanceProbability());
 	}
 
-	/*public Piece splitOfHalf() throws Exception {
+	public Piece splitOfHalf() throws Exception {
 		if(!canSplit()){
 			throw new Exception("Piece too small to split!");
 		}
 		existanceProbability = existanceProbability.getHalf();
-		return new (this.class)(this);
-	}*/
+		Piece otherHalf = quasiClone();
+		chessboard.addChessPiece(otherHalf);
+		return otherHalf;
+	}
 }

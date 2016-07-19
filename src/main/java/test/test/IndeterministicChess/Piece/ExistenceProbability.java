@@ -49,7 +49,7 @@ public class ExistenceProbability {
 
 	@Override
 	public String toString() {
-		return String.valueOf(FastMath.floor(probability.doubleValue() * 100)) + "%";
+		return String.valueOf(FastMath.floor(asDouble() * 100)) + "%";
 	}
 
 	@Override

@@ -42,6 +42,6 @@ public class Square {
 
 	@Override
 	public String toString() {
-		return "(" + getXPosition() + "," + getYPosition() + ")";
+		return String.valueOf("abcdefgh".charAt(yPosition-1)) + xPosition;
 	}
 }

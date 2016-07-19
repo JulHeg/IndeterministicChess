@@ -1,5 +1,6 @@
 package test.test.IndeterministicChess.IO;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import test.test.IndeterministicChess.Board.*;
@@ -14,17 +15,31 @@ public class Main{
 	public static void main(String[] args) {
 		// Schedule a job for the event dispatch thread:
 		// creating and showing this application's GUI.
-		try {
-			Chessboard.getInstance().addChessPiece(new Pawn(new Square(4,4), PieceColor.BLACK, ExistenceProbability.ONE.getHalf()));
-			Chessboard.getInstance().addChessPiece(new Knight(new Square(4,4), PieceColor.BLACK, ExistenceProbability.ONE.getHalf()));
-		} catch (Exception e1) {
-			throw new Error();
-		}
-		ResponseWindow responseWindow = new ResponseWindow(PieceColor.BLACK);
+		ResponseWindow blackWindow = new ResponseWindow(PieceColor.BLACK);
+		ResponseWindow whiteWindow = new ResponseWindow(PieceColor.WHITE);
 		SwingUtilities.invokeLater(new Thread() {
 			public void run() {
-				responseWindow.showGUI();
+				blackWindow.showGUI();
+				whiteWindow.showGUI();
 			}
 		});
+		PieceColor activePlayer = PieceColor.WHITE;
+		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
+		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
+		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
+		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
+		while(!Chessboard.getInstance().probabilisticHasLost(activePlayer)){
+			switch(activePlayer){
+			case WHITE:
+				whiteWindow.getResponse();
+				break;
+			case BLACK:
+				whiteWindow.getResponse();
+				break;
+			}
+			activePlayer = activePlayer.otherColor();
+		}
+		JOptionPane.showMessageDialog(blackWindow, activePlayer.toString() + " has lost!");
+		JOptionPane.showMessageDialog(whiteWindow, activePlayer.toString() + " has lost!");
 	}
 }

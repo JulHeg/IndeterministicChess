@@ -26,6 +26,10 @@ public class Queen extends Piece {
 		super(piece);
 	}
 
+	protected Queen quasiClone() {
+		return new Queen(this);
+	}
+
 	public Set<Square> getPossibleNextSquares() {
 		Set<Square> results = new HashSet<Square>();
 		int[] signs = { -1, 0, 1 };

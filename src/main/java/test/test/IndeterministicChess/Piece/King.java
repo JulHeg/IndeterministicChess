@@ -25,6 +25,10 @@ public class King extends Piece {
 		super(piece);
 	}
 
+	protected King quasiClone() {
+		return new King(this);
+	}
+
 	@Override
 	public Set<Square> getPossibleNextSquares() {
 		Set<Square> results = new HashSet<Square>();
