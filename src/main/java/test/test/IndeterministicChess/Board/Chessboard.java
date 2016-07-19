@@ -54,7 +54,7 @@ public class Chessboard {
 	}
 
 	public boolean isInBoard(Square square) {
-		return squares.contains(square.getXPosition(), square.getYPosition());
+		return squares.values().contains(square);
 	}
 
 	public ExistenceProbability ProbabilityOn(Square square, PieceColor color) {
@@ -126,10 +126,10 @@ public class Chessboard {
 	public void movePiece(Piece piece, Square target) throws Exception {
 		if (!piece.getPossibleNextSquares().contains(target)) {
 			// Just to be sure, shouldn't be necessary.
-			throw new Exception("Kein gültiger Zug!");
+			throw new Exception("No valid move!!");
 		}
-		if (isInBoard(target)) {
-			throw new Exception("Ziel liegt nicht im Brett!");
+		if (!isInBoard(target)) {
+			throw new Exception("Target is not on the board!");
 		}
 		ExistenceProbability totalProbabilityOfOtherColorBefore = ProbabilityOn(target, piece.getPieceColor().otherColor());
 		//=1-max{0,1-newPiece/oldPieces}=1-min{1,newPiece/totalProbabilityOfOtherColorBefore}
@@ -186,10 +186,11 @@ public class Chessboard {
 	
 	public void redetermine() {
 		Set<Piece> newPieces = new HashSet<Piece>();
-		for(Piece piece : getAllPieces()){
-			if(random.nextDouble() < piece.getExistanceProbability().asDouble()){
-				piece.setProbabilityToFull();
-				newPieces.add(piece);
+		for(Square square : squares.values()){
+			Piece probabilisticPiece = getProbabilisticPieceOn(square);
+			if(probabilisticPiece != null){
+				probabilisticPiece.setProbabilityToFull();
+				newPieces.add(probabilisticPiece);
 			}
 		}
 		clear();
@@ -226,27 +227,32 @@ public class Chessboard {
 		String result = "";
 		for(int y = 1; y <= getSize(); y++){
 			for(int x = 1; x <= getSize(); x++){
-				result += getRandomSymbolOn(new Square(x,y));
+				result += getProbabilisticSymbolOn(new Square(x,y));
 			}
 			result += "\n";
 		}
 		return result;
 	}
 	
-	public String getRandomSymbolOn(Square square){
-		String resultingSymbol = "";
-		double cumulativeProbability = 0;
-		double randomValue = random.nextDouble();
-		for(Piece piece : getPiecesOnSquare(square)){
-			if(cumulativeProbability <= randomValue && randomValue <= cumulativeProbability + piece.getExistanceProbability().asDouble()){
-				resultingSymbol = piece.getSymbol();
-				break;
-			}
-			cumulativeProbability += piece.getExistanceProbability().asDouble();
+	public String getProbabilisticSymbolOn(Square square){
+		Piece probabilisticPiece = getProbabilisticPieceOn(square);
+		if(probabilisticPiece == null){
+			return " ";
 		}
-		if(resultingSymbol.isEmpty()){
-			resultingSymbol = " ";
+		else{
+			return probabilisticPiece.getSymbol();
 		}
-		return resultingSymbol;
+	}
+	
+	public Piece getProbabilisticPieceOn(Square square){
+	double cumulativeProbability = 0;
+	double randomValue = random.nextDouble();
+	for(Piece piece : getPiecesOnSquare(square)){
+		if(cumulativeProbability <= randomValue && randomValue <= cumulativeProbability + piece.getExistanceProbability().asDouble()){
+			return piece;
+		}
+		cumulativeProbability += piece.getExistanceProbability().asDouble();
+	}
+	return null;
 	}
 }

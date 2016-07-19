@@ -43,11 +43,6 @@ public abstract class Piece {
 		existanceProbability = ExistenceProbability.ONE;
 	}
 
-	@Override
-	public Piece clone() {
-		return this;
-	}
-
 	public Square getPosition() {
 		return position;
 	}
@@ -102,8 +97,24 @@ public abstract class Piece {
 		}
 		return results;
 	}
+	
+	public boolean canSplit(){
+		return !existanceProbability.getHalf().isDead();
+	}
+	
+	public boolean canMove(){
+		return !getPossibleNextSquares().isEmpty();
+	}
 
 	public void incorporatePiece(Piece other) {
 		existanceProbability = existanceProbability.add(other.getExistanceProbability());
 	}
+
+	/*public Piece splitOfHalf() throws Exception {
+		if(!canSplit()){
+			throw new Exception("Piece too small to split!");
+		}
+		existanceProbability = existanceProbability.getHalf();
+		return new (this.class)(this);
+	}*/
 }
