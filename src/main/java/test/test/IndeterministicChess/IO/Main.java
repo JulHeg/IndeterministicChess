@@ -24,22 +24,24 @@ public class Main{
 			}
 		});
 		PieceColor activePlayer = PieceColor.WHITE;
-		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
-		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
-		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
-		System.out.println(Chessboard.getInstance().probabilisticHasLost(activePlayer));
 		while(!Chessboard.getInstance().probabilisticHasLost(activePlayer)){
 			switch(activePlayer){
 			case WHITE:
 				whiteWindow.getResponse();
 				break;
 			case BLACK:
-				whiteWindow.getResponse();
+				blackWindow.getResponse();
 				break;
 			}
 			activePlayer = activePlayer.otherColor();
 		}
-		JOptionPane.showMessageDialog(blackWindow, activePlayer.toString() + " has lost!");
-		JOptionPane.showMessageDialog(whiteWindow, activePlayer.toString() + " has lost!");
+		if(activePlayer == PieceColor.BLACK){
+			blackWindow.showLose();
+			whiteWindow.showWin();
+		}
+		else{
+			blackWindow.showWin();
+			whiteWindow.showLose();
+		}
 	}
 }

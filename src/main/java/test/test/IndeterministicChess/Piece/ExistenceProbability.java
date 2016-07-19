@@ -108,6 +108,6 @@ public class ExistenceProbability {
 	}
 
 	public ExistenceProbability divide(ExistenceProbability other) {
-		return new ExistenceProbability(probability.add(other.getProbability()));
+		return new ExistenceProbability(probability.divide(other.getProbability()));
 	}
 }

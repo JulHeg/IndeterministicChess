@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,12 +15,14 @@ import com.google.common.collect.*;
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
-@SuppressWarnings("serial")
-public class ResponseWindow extends JPanel {
+public class ResponseWindow {
 	final private JProgressBar progressBar;
 	final private ImmutableBiMap<Square, JButton> squares;
 	final private JButton buttonMove, buttonSplit, buttonRedetermine, buttonEnd;
 	final public PieceColor player;
+	final public JPanel panel;
+	ResourceBundle bundle = ResourceBundle.getBundle("i18n");
+	final private JFrame frame = new JFrame(bundle.getString("applicationTitle"));
 	
 	public void getResponse(){
 		responseGetter =  new Thread() {
@@ -128,7 +131,7 @@ public class ResponseWindow extends JPanel {
 			}
 		}
 	}
-
+	
 	public enum moveOptions {
 		MOVE, SPLIT, REDETERMINE
 	}
@@ -158,7 +161,7 @@ public class ResponseWindow extends JPanel {
 	private void checkForPromotion(){
 		for(Pawn pawn : Chessboard.getInstance().getPawnsToBePromoted()){
 			Object[] options = Chessboard.promotionPositions;
-			String userChoice =	(String)JOptionPane.showInputDialog(frame, "To whar role shall the Pawn at " + pawn.getPosition() + " be promoted?", "Role Selection", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			String userChoice =	(String)JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), pawn.getPosition()), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 			try {
 				Chessboard.getInstance().changeRole(pawn, userChoice);
 			} catch (Exception e) {
@@ -186,19 +189,26 @@ public class ResponseWindow extends JPanel {
 		}
 		else if(piecesOn.size() > 1){
 			Object[] options = piecesOn.stream().map(Piece::getTypeName).toArray(String[]::new);
-			Object userChoice = JOptionPane.showInputDialog(frame, "Which piece do you want to move?", "Piece Selection", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			Object userChoice = JOptionPane.showInputDialog(frame, bundle.getString("pieceSelectionDialogueQuestion"), bundle.getString("pieceSelectionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 			if(userChoice == null){
 				return selectAPieceOn(square);
 			}
 			else {
 				String selectedPiece =	(String)userChoice;
-				System.out.println(selectedPiece);
 				return piecesOn.stream().filter(piece -> piece.getTypeName().equals(selectedPiece)).findAny().get();
 			}
 		}
 		else {
 			throw new Error("A Square without pieces on it was selectable for moving.");
 		}
+	}
+	
+	public void showWin(){
+		JOptionPane.showMessageDialog(panel, bundle.getString("winMessage"));
+	}
+	
+	public void showLose(){
+		JOptionPane.showMessageDialog(panel, bundle.getString("loseMessage"));
 	}
 	
 	private class buttonMoveListener implements ActionListener {
@@ -254,13 +264,13 @@ public class ResponseWindow extends JPanel {
 	}
 	
 	public ResponseWindow(PieceColor player) {
-		super(new BorderLayout());
+		panel = new JPanel(new BorderLayout());
 		this.player = player;
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(100);
 		progressBar.setStringPainted(true);
-		add(progressBar, BorderLayout.PAGE_START);
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		panel.add(progressBar, BorderLayout.PAGE_START);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		JPanel boardPanel = new JPanel();
 		GridLayout boardOutput = new GridLayout(8, 8, 0, 0);
 		boardPanel.setLayout(boardOutput);
@@ -286,38 +296,35 @@ public class ResponseWindow extends JPanel {
 		}
 		squares = builder.build();
 		boardPanel.setSize(200, 200);
-		add(boardPanel, BorderLayout.CENTER);
-		add(new JSeparator(JSeparator.HORIZONTAL),BorderLayout.LINE_START);
+		panel.add(boardPanel, BorderLayout.CENTER);
+		panel.add(new JSeparator(JSeparator.HORIZONTAL),BorderLayout.LINE_START);
 		JPanel buttonPanel =  new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		buttonMove = new JButton("Move");
+		buttonMove = new JButton(bundle.getString("moveButton"));
 		buttonMove.addActionListener(new buttonMoveListener());
 		buttonMove.setEnabled(false);
-		buttonSplit = new JButton("Split");
+		buttonSplit = new JButton(bundle.getString("splitButton"));
 		buttonSplit.addActionListener(new buttonSplitListener());
 		buttonSplit.setEnabled(false);
-		buttonRedetermine = new JButton("Redetermine");
+		buttonRedetermine = new JButton(bundle.getString("redetermineButton"));
 		buttonRedetermine.addActionListener(new buttonRedetermineListener());
 		buttonRedetermine.setEnabled(false);
-		buttonEnd = new JButton("End Move");
+		buttonEnd = new JButton(bundle.getString("endButton"));
 		buttonEnd.addActionListener(new buttonEndListener());
 		buttonEnd.setEnabled(false);
 		buttonPanel.add(buttonMove);
 		buttonPanel.add(buttonSplit);
 		buttonPanel.add(buttonRedetermine);
 		buttonPanel.add(buttonEnd);
-		add(buttonPanel,BorderLayout.PAGE_END);
+		panel.add(buttonPanel,BorderLayout.PAGE_END);
 	}
-	
-	JFrame frame;
 	
 	/**
 	 * Create the GUI and show it.
 	 */
 	public void showGUI() {
-		frame = new JFrame("IndeterministicChess");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(this);
+		frame.add(panel);
 		viewUpdater.start();
 		frame.pack();
 		frame.setResizable(false);

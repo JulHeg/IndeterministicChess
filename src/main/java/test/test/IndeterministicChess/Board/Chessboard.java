@@ -137,11 +137,14 @@ public class Chessboard {
 		}
 		ExistenceProbability totalProbabilityOfOtherColorBefore = ProbabilityOn(target, piece.getPieceColor().otherColor());
 		//=1-max{0,1-newPiece/oldPieces}=1-min{1,newPiece/totalProbabilityOfOtherColorBefore}
-		ExistenceProbability mulitplier = piece.getExistanceProbability()
-				.divide(totalProbabilityOfOtherColorBefore).cap(ExistenceProbability.ONE).getRest();
-		// Partially take enemy pieces
-		for (Piece enemyPiece : getPiecesOnSquare(target, piece.getPieceColor().otherColor())) {
-			reducePiece(enemyPiece,mulitplier);
+		if(!totalProbabilityOfOtherColorBefore.isDead())
+		{
+			ExistenceProbability mulitplier = piece.getExistanceProbability()
+					.divide(totalProbabilityOfOtherColorBefore).cap(ExistenceProbability.ONE).getRest();
+			// Partially take enemy pieces
+			for (Piece enemyPiece : getPiecesOnSquare(target, piece.getPieceColor().otherColor())) {
+				reducePiece(enemyPiece, mulitplier);
+			}
 		}
 		piece.setPosition(target);
 	}
