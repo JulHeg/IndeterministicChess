@@ -92,7 +92,7 @@ public abstract class Piece {
 			}
 			ExistenceProbability enemyProbability = chessboard.ProbabilityOn(square, getPieceColor().otherColor());
 			if(!enemyProbability.equals(ExistenceProbability.ZERO)){
-				runningMin = runningMin.cap(enemyProbability);
+				runningMin = runningMin.cap(enemyProbability.add(chessboard.ProbabilityOn(square, getPieceColor())).getRest());
 			}
 		}
 		return results;

@@ -6,10 +6,8 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
-import test.test.IndeterministicChess.Board.Chessboard;
-import test.test.IndeterministicChess.Board.Square;
-import test.test.IndeterministicChess.Piece.Piece;
-import test.test.IndeterministicChess.Piece.PieceColor;
+import test.test.IndeterministicChess.Board.*;
+import test.test.IndeterministicChess.Piece.*;
 
 public abstract class generalIO {
 	final public PieceColor player;

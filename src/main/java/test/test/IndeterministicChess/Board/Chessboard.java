@@ -128,10 +128,6 @@ public class Chessboard {
 	}
 
 	public void movePiece(Piece piece, Square target) throws Exception {
-		if (!piece.getPossibleNextSquares().contains(target)) {
-			// Just to be sure, shouldn't be necessary.
-			throw new Exception("No valid move!!");
-		}
 		if (!isInBoard(target)) {
 			throw new Exception("Target is not on the board!");
 		}
