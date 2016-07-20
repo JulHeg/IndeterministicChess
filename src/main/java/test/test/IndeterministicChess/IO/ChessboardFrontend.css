@@ -16,7 +16,13 @@
 	background-color:#757575;
 	height:100%;
 	position:absolute;
-	line-height:inherit
+	line-height:inherit;
+	/*This anumation is only a placeholder for when it can be contolled by the server.*/
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
 }
 table {
 	border: 0px solid black;
@@ -33,4 +39,9 @@ table {
 
 .ButtonContainer{
 	text-align: center;
+}
+
+@keyframes example {
+    from {width: 50%;}
+    to {width: 100%;}
 }

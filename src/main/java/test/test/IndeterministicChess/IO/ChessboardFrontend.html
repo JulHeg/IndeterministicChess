@@ -7,14 +7,18 @@
 
 <script>
 	function sendPressedMessage(x, y) {
-		$.ajax({
+		/*$.ajax({
 			type:"POST",
 			url: "http://localhost:8080/buttonPressed",
 		    data: JSON.stringify({ "xPos": x, "yPos" : y }),
-	        contentType: "application/json; charset=utf-8",
 		    dataType: "json"
-			});
-		//$.post("http://localhost:8080/buttonPressed")
+			});*/
+			$.ajax({
+				type:"POST",
+				url: ("http://localhost:8080/buttonPressed?xPos="+x+"&yPos="+y),
+			    data: JSON.stringify({ "xPos": x, "yPos" : y }),
+			    dataType: "json"
+				});
 	}
 
         $.get("http://localhost:8080/greeting",
