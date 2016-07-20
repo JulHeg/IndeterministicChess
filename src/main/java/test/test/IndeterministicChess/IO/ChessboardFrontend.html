@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Indeterministic Frontend</title>
+<link rel="stylesheet" href="ChessboardFrontend.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script>
+        $.get("http://localhost:8080/greeting",
+          function(data){
+        	$("#abcd").append(data.content);
+        	var content = "<table>";
+         	for(y=1; y <= 8; y++){
+         		content += "<tr>";
+             	for(x=1; x <= 8; x++){
+             		content += '<td><button type="button" class="SquareButtons" id="Square' + x + "_" + y + '">' + x + ',' +  y + '</button></td>';
+             	}
+         		content += "</tr>";
+         	}
+       		content += "</table>";
+            $("#hopefullyATable").append(content); 
+          });
+    </script>
+</head>
+<body>
+	<div id="abcd" style="white-space: pre-wrap;"></div>
+	<div id="hopefullyATable"></div>
+</body>
+</html>

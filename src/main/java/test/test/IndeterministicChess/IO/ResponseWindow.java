@@ -16,7 +16,7 @@ public class ResponseWindow extends generalIO{
 	final private ImmutableBiMap<Square, JButton> squares;
 	final private JButton buttonMove, buttonSplit, buttonRedetermine, buttonEnd;
 	final public JPanel panel;
-	ResourceBundle bundle = ResourceBundle.getBundle("i18n");
+	ResourceBundle bundle;
 	final private JFrame frame;
 	final private Color whiteSquareColor = new Color(255, 204, 128);
 	final private Color blackSquareColor = new Color(194, 153, 112);
@@ -47,6 +47,9 @@ public class ResponseWindow extends generalIO{
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
+    	bundle = ResourceBundle.getBundle("i18n");
+		bundle.getString("applicationTitle");
+		bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName");
 		frame = new JFrame(bundle.getString("applicationTitle") + " - " + bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName"));
 		panel = new JPanel(new BorderLayout());
 		progressBar = new JProgressBar(0, 100);
