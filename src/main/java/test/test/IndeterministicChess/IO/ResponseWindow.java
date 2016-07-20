@@ -23,6 +23,10 @@ public class ResponseWindow extends generalIO{
 	final public JPanel panel;
 	ResourceBundle bundle = ResourceBundle.getBundle("i18n");
 	final private JFrame frame;
+	final private Color whiteSquareColor = new Color(255, 204, 128);
+	final private Color blackSquareColor = new Color(194, 153, 112);
+	final private Color whiteSquareColorSelected = new Color(230, 255, 153);
+	final private Color blackSquareColorSelected = new Color(153, 194, 112);
 	
 	@Override
 	protected void setAmountOfMoveLeft(int target){
@@ -392,13 +396,12 @@ public class ResponseWindow extends generalIO{
 		}
 	};
 	
-	private void setButtonEnabled(JButton button, boolean enabled){
-		Square square = squares.inverse().get(button);
+	private void setButtonEnabled(JButton button, boolean enabled){Square square = squares.inverse().get(button);
 		if(enabled){
-			button.setBackground(Color.GREEN);
+			button.setBackground(square.getSquareColor() == SquareColor.BLACK ? blackSquareColorSelected : whiteSquareColorSelected);
 		}
 		else{
-			button.setBackground(square.getSquareColor() == SquareColor.BLACK ? Color.LIGHT_GRAY : Color.WHITE);
+			button.setBackground(square.getSquareColor() == SquareColor.BLACK ? blackSquareColor : whiteSquareColor);
 		}
 		button.setEnabled(enabled);
 	}
