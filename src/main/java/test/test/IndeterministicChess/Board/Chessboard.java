@@ -273,4 +273,8 @@ public class Chessboard {
 		double totalKingProbability = ExistenceProbability.sumProbability(getAllPiecesOf(player).stream().filter(piece -> piece instanceof King).map(Piece::getExistanceProbability).collect(Collectors.toSet())).asDouble();
 		return random.nextDouble() > totalKingProbability;
 	}
+	
+	public boolean canSomehowMove(PieceColor player){
+		return getAllPiecesOf(player).stream().anyMatch(Piece::canMove);
+	}
 }
