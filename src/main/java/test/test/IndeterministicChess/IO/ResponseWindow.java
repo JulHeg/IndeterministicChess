@@ -1,12 +1,8 @@
 package test.test.IndeterministicChess.IO;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.awt.event.*;
+import java.util.*;
 
 import javax.swing.*;
 
@@ -19,7 +15,6 @@ public class ResponseWindow extends generalIO{
 	final private JProgressBar progressBar;
 	final private ImmutableBiMap<Square, JButton> squares;
 	final private JButton buttonMove, buttonSplit, buttonRedetermine, buttonEnd;
-	final public PieceColor player;
 	final public JPanel panel;
 	ResourceBundle bundle = ResourceBundle.getBundle("i18n");
 	final private JFrame frame;
@@ -34,7 +29,7 @@ public class ResponseWindow extends generalIO{
 		Thread progressbarAnimator = new Thread() {
 			public void run() {
 				int stepCount = 40;
-				int stepDuration = 10; //In millisecond
+				int stepDuration = 10; //In milliseconds
 				for(int i = 0; i <= stepCount; i++){
 					progressBar.setValue(oldValue + (target-oldValue)*i/stepCount);
 					try {
@@ -48,12 +43,12 @@ public class ResponseWindow extends generalIO{
 	}
 	
 	public ResponseWindow(PieceColor player) {
+		super(player);
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
 		frame = new JFrame(bundle.getString("applicationTitle") + " - " + bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName"));
 		panel = new JPanel(new BorderLayout());
-		this.player = player;
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(100);
 		progressBar.setStringPainted(true);
@@ -127,75 +122,17 @@ public class ResponseWindow extends generalIO{
 				buttonRedetermine.setEnabled(false);
 				switch(moveOption){
 				case MOVE:
-					Set<Piece> alreadyMovedPieces = new HashSet<Piece>();
-					while(true){
-						Set<Piece> movablePieces = Chessboard.getInstance().getAllPiecesOf(player).stream().filter(piece -> piece.getExistanceProbability().asDouble() * 100 <= getAmountOfMoveLeft() && piece.canMove()).collect(Collectors.toSet());
-						if(movablePieces.isEmpty()){
-							break;
-						}
-						Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(Sets.difference(movablePieces, alreadyMovedPieces)));
-						if(thisSelection == null){//i.e. the exit button was pushed
-							break;
-						}
-						Piece pieceToMove = selectAPieceOn(thisSelection);
-						Set<Square> nextSquares = pieceToMove.getPossibleNextSquares();
-						//Get the piece's target square
-						thisSelection = selectOneOfTheseSquares(nextSquares);
-						//Move
-						try {
-							Chessboard.getInstance().movePiece(pieceToMove, thisSelection);
-							Double amountOfMoveLeft = getAmountOfMoveLeft() - (100 * pieceToMove.getExistanceProbability().asDouble());
-							checkForPromotion();
-							Chessboard.getInstance().combinePieces();
-							setAmountOfMoveLeft(amountOfMoveLeft.intValue());
-							alreadyMovedPieces.add(pieceToMove);
-							} 
-						catch (Exception e) {
-							e.printStackTrace();
-						}
-						buttonEnd.setEnabled(true);//At least on move required
-					}
-					deselectAll();
-					buttonEnd.setEnabled(false);
+					makeMovingMove();
 					break;
 				case REDETERMINE:
 					Chessboard.getInstance().redetermine();
 					break;
 				case SPLIT:
-					Set<Piece> splittablePieces = Chessboard.getInstance().getAllPiecesOf(player).stream().filter(Piece::canSplit).filter(Piece::canMove).collect(Collectors.toSet());
-					//Get the piece that is to be moved
-					Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(splittablePieces));
-					Piece pieceToMove = selectAPieceOn(thisSelection);
-					//Get the piece's target square
-					Piece otherHalf;
-					try {
-						otherHalf = pieceToMove.splitOfHalf();
-					} catch (Exception e1) {
-						throw new Error(e1);
-					}
-					//Move one Half
-					thisSelection = selectOneOfTheseSquares(otherHalf.getPossibleNextSquares());
-					try {
-						Chessboard.getInstance().movePiece(otherHalf, thisSelection);
-						checkForPromotion();
-						Chessboard.getInstance().combinePieces();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					//Move remaining half
-					thisSelection = selectOneOfTheseSquares(pieceToMove.getPossibleNextSquares());
-					try {
-						Chessboard.getInstance().movePiece(pieceToMove, thisSelection);
-						checkForPromotion();
-						Chessboard.getInstance().combinePieces();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					deselectAll();
-					break;
-				default:
+					makeSplittingMove();
 					break;
 				}
+				buttonEnd.setEnabled(false);
+				deselectAll();
 			}
 		};
 		responseGetter.start();
@@ -231,10 +168,6 @@ public class ResponseWindow extends generalIO{
 		MOVE, SPLIT, REDETERMINE
 	}
 	
-	public Set<Square> getOccupiedSquares(Set<Piece> pieces) {
-		return pieces.stream().map(Piece::getPosition).collect(Collectors.toSet());
-	}
-	
 	private void waitForGUI(){
 		try {
 			synchronized (wakeResponseGetter) {
@@ -253,7 +186,8 @@ public class ResponseWindow extends generalIO{
 	
 	Thread responseGetter;
 	
-	private void checkForPromotion(){
+	@Override
+	protected void checkForPromotion(){
 		for(Pawn pawn : Chessboard.getInstance().getPawnsToBePromoted()){
 			Object[] options = Chessboard.promotionPositions;
 			String userChoice =	(String)JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), pawn.getPosition()), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -404,5 +338,10 @@ public class ResponseWindow extends generalIO{
 			button.setBackground(square.getSquareColor() == SquareColor.BLACK ? blackSquareColor : whiteSquareColor);
 		}
 		button.setEnabled(enabled);
+	}
+
+	@Override
+	protected void enableMoveEnding() {
+		buttonEnd.setEnabled(true);
 	}
 }
