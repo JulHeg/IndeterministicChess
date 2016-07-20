@@ -15,255 +15,39 @@ import com.google.common.collect.*;
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
-public class ResponseWindow {
+public class ResponseWindow extends generalIO{
 	final private JProgressBar progressBar;
 	final private ImmutableBiMap<Square, JButton> squares;
 	final private JButton buttonMove, buttonSplit, buttonRedetermine, buttonEnd;
 	final public PieceColor player;
 	final public JPanel panel;
 	ResourceBundle bundle = ResourceBundle.getBundle("i18n");
-	final private JFrame frame = new JFrame(bundle.getString("applicationTitle"));
+	final private JFrame frame;
 	
-	public void getResponse(){
-		responseGetter =  new Thread() {
+	@Override
+	protected void setAmountOfMoveLeft(int target){
+		int oldValue = progressBar.getValue();
+		Thread progressbarAnimator = new Thread() {
 			public void run() {
-				progressBar.setValue(100);
-				buttonMove.setEnabled(true);
-				buttonSplit.setEnabled(true);
-				buttonRedetermine.setEnabled(true);
-				buttonEnd.setEnabled(false);
-				try {
-					synchronized (wakeResponseGetter) {
-						wakeResponseGetter.wait();
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				buttonMove.setEnabled(false);
-				buttonSplit.setEnabled(false);
-				buttonRedetermine.setEnabled(false);
-				switch(moveOption){
-				case MOVE:
-					Set<Piece> alreadyMovedPieces = new HashSet<Piece>();
-					while(true){
-						Set<Piece> movablePieces = Chessboard.getInstance().getAllPiecesOf(player).stream().filter(piece -> piece.getExistanceProbability().asDouble() * 100 <= progressBar.getValue() && piece.canMove()).collect(Collectors.toSet());
-						if(movablePieces.isEmpty()){
-							break;
-						}
-						selectOnly(getOccupiedSquares(Sets.difference(movablePieces, alreadyMovedPieces)));
-						//Get the piece that is to be moved
-						waitForGUI();
-						if(selection == null){//i.e. the exit button was pushed
-							break;
-						}
-						Piece pieceToMove = selectAPieceOn(selection);
-						Set<Square> nextSquares = pieceToMove.getPossibleNextSquares();
-						selectOnly(nextSquares);
-						//Get the piece's target square
-						waitForGUI();
-						//Move
-						try {
-							Chessboard.getInstance().movePiece(pieceToMove, selection);
-							Double amountOfMoveLeft = progressBar.getValue() - (100 * pieceToMove.getExistanceProbability().asDouble());
-							checkForPromotion();
-							Chessboard.getInstance().combinePieces();
-							progressBar.setValue(amountOfMoveLeft.intValue());
-							alreadyMovedPieces.add(pieceToMove);
-							} 
-						catch (Exception e) {
-							e.printStackTrace();
-						}
-						buttonEnd.setEnabled(true);//At least on move required
-					}
-					deselectAll();
-					buttonEnd.setEnabled(false);
-					break;
-				case REDETERMINE:
-					Chessboard.getInstance().redetermine();
-					break;
-				case SPLIT:
-					Set<Piece> splittablePieces = Chessboard.getInstance().getAllPiecesOf(player).stream().filter(Piece::canSplit).filter(Piece::canMove).collect(Collectors.toSet());
-					selectOnly(getOccupiedSquares(splittablePieces));
-					//Get the piece that is to be moved
-					waitForGUI();
-					Piece pieceToMove = selectAPieceOn(selection);
-					//Get the piece's target square
-					Piece otherHalf;
+				int stepCount = 40;
+				int stepDuration = 10; //In millisecond
+				for(int i = 0; i <= stepCount; i++){
+					progressBar.setValue(oldValue + (target-oldValue)*i/stepCount);
 					try {
-						otherHalf = pieceToMove.splitOfHalf();
-					} catch (Exception e1) {
-						throw new Error(e1);
-					}
-					selectOnly(otherHalf.getPossibleNextSquares());
-					waitForGUI();
-					//Move one Half
-					try {
-						Chessboard.getInstance().movePiece(otherHalf, selection);
-						checkForPromotion();
-						Chessboard.getInstance().combinePieces();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					//Get the piece's target square
-					selectOnly(pieceToMove.getPossibleNextSquares());
-					waitForGUI();
-					//Move remaining half
-					try {
-						Chessboard.getInstance().movePiece(pieceToMove, selection);
-						checkForPromotion();
-						Chessboard.getInstance().combinePieces();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					deselectAll();
-					break;
-				default:
-					break;
+						sleep(stepDuration);
+					} catch (InterruptedException e) { }
 				}
 			}
 		};
-		responseGetter.start();
-		synchronized (responseGetter) {
-			try {
-				responseGetter.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public enum moveOptions {
-		MOVE, SPLIT, REDETERMINE
-	}
-	
-	public Set<Square> getOccupiedSquares(Set<Piece> pieces) {
-		return pieces.stream().map(Piece::getPosition).collect(Collectors.toSet());
-	}
-	
-	private void waitForGUI(){
-		try {
-			synchronized (wakeResponseGetter) {
-				wakeResponseGetter.wait();
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public Object wakeResponseGetter = "";
-	
-	public moveOptions moveOption = moveOptions.MOVE;
-	
-	public Square selection = new Square(-1,-1);
-	
-	Thread responseGetter;
-	
-	private void checkForPromotion(){
-		for(Pawn pawn : Chessboard.getInstance().getPawnsToBePromoted()){
-			Object[] options = Chessboard.promotionPositions;
-			String userChoice =	(String)JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), pawn.getPosition()), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			try {
-				Chessboard.getInstance().changeRole(pawn, userChoice);
-			} catch (Exception e) {
-				//Try again until the user doesn't quit any more
-				checkForPromotion();
-			}
-		}
-	}
-	
-	private void deselectAll(){
-		selectOnly(new HashSet<Square>());
-	}
-	
-	private void selectOnly(Set<Square> those){
-		for(Square square : squares.keySet()){
-			JButton button = squares.get(square);
-			setButtonEnabled(button, those.contains(square));
-		}
-	}
-	
-	private Piece selectAPieceOn(Square square){
-		Set<Piece> piecesOn = Chessboard.getInstance().getPiecesOnSquare(square, player);
-		if(piecesOn.size() == 1){
-			return piecesOn.iterator().next();
-		}
-		else if(piecesOn.size() > 1){
-			Object[] options = piecesOn.stream().map(Piece::getTypeName).toArray(String[]::new);
-			Object userChoice = JOptionPane.showInputDialog(frame, bundle.getString("pieceSelectionDialogueQuestion"), bundle.getString("pieceSelectionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			if(userChoice == null){
-				return selectAPieceOn(square);
-			}
-			else {
-				String selectedPiece =	(String)userChoice;
-				return piecesOn.stream().filter(piece -> piece.getTypeName().equals(selectedPiece)).findAny().get();
-			}
-		}
-		else {
-			throw new Error("A Square without pieces on it was selectable for moving.");
-		}
-	}
-	
-	public void showWin(){
-		JOptionPane.showMessageDialog(panel, bundle.getString("winMessage"));
-	}
-	
-	public void showLose(){
-		JOptionPane.showMessageDialog(panel, bundle.getString("loseMessage"));
-	}
-	
-	private class buttonMoveListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			synchronized (wakeResponseGetter) {
-				moveOption = moveOptions.MOVE;
-				wakeResponseGetter.notifyAll();
-			}
-		}
-	}
-	
-	private class buttonSplitListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			synchronized (wakeResponseGetter) {
-				moveOption = moveOptions.SPLIT;
-				wakeResponseGetter.notifyAll();
-			}
-		}
-	}
-	
-	private class buttonRedetermineListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			synchronized (wakeResponseGetter) {
-				moveOption = moveOptions.REDETERMINE;
-				wakeResponseGetter.notifyAll();
-			}
-		}
-	}
-	
-	private class buttonEndListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			synchronized (wakeResponseGetter) {
-				selection = null;
-				wakeResponseGetter.notifyAll();
-			}
-		}
-	}
-	
-	private class squareButtonsListener implements ActionListener {
-		Square square;
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			synchronized (wakeResponseGetter) {
-				selection = square;
-				wakeResponseGetter.notifyAll();
-			}
-		}
+		progressbarAnimator.start();
+		super.setAmountOfMoveLeft(target);
 	}
 	
 	public ResponseWindow(PieceColor player) {
+    	try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {}
+		frame = new JFrame(bundle.getString("applicationTitle") + " - " + bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName"));
 		panel = new JPanel(new BorderLayout());
 		this.player = player;
 		progressBar = new JProgressBar(0, 100);
@@ -319,6 +103,113 @@ public class ResponseWindow {
 		panel.add(buttonPanel,BorderLayout.PAGE_END);
 	}
 	
+	public void getResponse(){
+		responseGetter =  new Thread() {
+			public void run() {
+				setAmountOfMoveLeft(100);
+				buttonMove.setEnabled(true);
+				buttonSplit.setEnabled(true);
+				buttonRedetermine.setEnabled(true);
+				buttonEnd.setEnabled(false);
+				try {
+					synchronized (wakeResponseGetter) {
+						wakeResponseGetter.wait();
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				buttonMove.setEnabled(false);
+				buttonSplit.setEnabled(false);
+				buttonRedetermine.setEnabled(false);
+				switch(moveOption){
+				case MOVE:
+					Set<Piece> alreadyMovedPieces = new HashSet<Piece>();
+					while(true){
+						Set<Piece> movablePieces = Chessboard.getInstance().getAllPiecesOf(player).stream().filter(piece -> piece.getExistanceProbability().asDouble() * 100 <= getAmountOfMoveLeft() && piece.canMove()).collect(Collectors.toSet());
+						if(movablePieces.isEmpty()){
+							break;
+						}
+						Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(Sets.difference(movablePieces, alreadyMovedPieces)));
+						if(thisSelection == null){//i.e. the exit button was pushed
+							break;
+						}
+						Piece pieceToMove = selectAPieceOn(thisSelection);
+						Set<Square> nextSquares = pieceToMove.getPossibleNextSquares();
+						//Get the piece's target square
+						thisSelection = selectOneOfTheseSquares(nextSquares);
+						//Move
+						try {
+							Chessboard.getInstance().movePiece(pieceToMove, thisSelection);
+							Double amountOfMoveLeft = getAmountOfMoveLeft() - (100 * pieceToMove.getExistanceProbability().asDouble());
+							checkForPromotion();
+							Chessboard.getInstance().combinePieces();
+							setAmountOfMoveLeft(amountOfMoveLeft.intValue());
+							alreadyMovedPieces.add(pieceToMove);
+							} 
+						catch (Exception e) {
+							e.printStackTrace();
+						}
+						buttonEnd.setEnabled(true);//At least on move required
+					}
+					deselectAll();
+					buttonEnd.setEnabled(false);
+					break;
+				case REDETERMINE:
+					Chessboard.getInstance().redetermine();
+					break;
+				case SPLIT:
+					Set<Piece> splittablePieces = Chessboard.getInstance().getAllPiecesOf(player).stream().filter(Piece::canSplit).filter(Piece::canMove).collect(Collectors.toSet());
+					//Get the piece that is to be moved
+					Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(splittablePieces));
+					Piece pieceToMove = selectAPieceOn(thisSelection);
+					//Get the piece's target square
+					Piece otherHalf;
+					try {
+						otherHalf = pieceToMove.splitOfHalf();
+					} catch (Exception e1) {
+						throw new Error(e1);
+					}
+					//Move one Half
+					thisSelection = selectOneOfTheseSquares(otherHalf.getPossibleNextSquares());
+					try {
+						Chessboard.getInstance().movePiece(otherHalf, thisSelection);
+						checkForPromotion();
+						Chessboard.getInstance().combinePieces();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					//Move remaining half
+					thisSelection = selectOneOfTheseSquares(pieceToMove.getPossibleNextSquares());
+					try {
+						Chessboard.getInstance().movePiece(pieceToMove, thisSelection);
+						checkForPromotion();
+						Chessboard.getInstance().combinePieces();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					deselectAll();
+					break;
+				default:
+					break;
+				}
+			}
+		};
+		responseGetter.start();
+		synchronized (responseGetter) {
+			try {
+				responseGetter.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	protected Square selectOneOfTheseSquares(Set<Square> theseSquares) {
+		selectOnly(theseSquares);
+		waitForGUI();
+		return selection;
+	}
 	/**
 	 * Create the GUI and show it.
 	 */
@@ -332,12 +223,159 @@ public class ResponseWindow {
 		squares.values().stream().forEach(button -> setButtonEnabled(button, false));
 	}
 	
+	public enum moveOptions {
+		MOVE, SPLIT, REDETERMINE
+	}
+	
+	public Set<Square> getOccupiedSquares(Set<Piece> pieces) {
+		return pieces.stream().map(Piece::getPosition).collect(Collectors.toSet());
+	}
+	
+	private void waitForGUI(){
+		try {
+			synchronized (wakeResponseGetter) {
+				wakeResponseGetter.wait();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Object wakeResponseGetter = "";
+	
+	public moveOptions moveOption = moveOptions.MOVE;
+	
+	public Square selection = new Square(-1,-1);
+	
+	Thread responseGetter;
+	
+	private void checkForPromotion(){
+		for(Pawn pawn : Chessboard.getInstance().getPawnsToBePromoted()){
+			Object[] options = Chessboard.promotionPositions;
+			String userChoice =	(String)JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), pawn.getPosition()), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			try {
+				Chessboard.getInstance().changeRole(pawn, userChoice);
+			} catch (Exception e) {
+				//Try again until the user doesn't quit any more
+				checkForPromotion();
+			}
+		}
+	}
+	
+	private void deselectAll(){
+		selectOnly(new HashSet<Square>());
+	}
+	
+	private void selectOnly(Set<Square> those){
+		for(Square square : squares.keySet()){
+			JButton button = squares.get(square);
+			setButtonEnabled(button, those.contains(square));
+		}
+	}
+	
+	@Override
+	protected Piece selectAPieceOn(Square square){
+		Set<Piece> piecesOn = Chessboard.getInstance().getPiecesOnSquare(square, player);
+		if(piecesOn.size() == 1){
+			return piecesOn.iterator().next();
+		}
+		else if(piecesOn.size() > 1){
+			Object[] options = piecesOn.stream().map(Piece::getTypeName).toArray(String[]::new);
+			Object userChoice = JOptionPane.showInputDialog(frame, bundle.getString("pieceSelectionDialogueQuestion"), bundle.getString("pieceSelectionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			if(userChoice == null){
+				return selectAPieceOn(square);
+			}
+			else {
+				String selectedPiece =	(String)userChoice;
+				return piecesOn.stream().filter(piece -> piece.getTypeName().equals(selectedPiece)).findAny().get();
+			}
+		}
+		else {
+			throw new Error("A Square without pieces on it was selectable for moving.");
+		}
+	}
+
+	@Override
+	public void showWin(){
+		showMessageInNewThread(bundle.getString("winMessage"));
+	}
+
+	@Override
+	public void showLose(){
+		showMessageInNewThread(bundle.getString("loseMessage"));
+	}
+
+	@Override
+	public void showDraw(){
+		showMessageInNewThread(bundle.getString("drawMessage"));
+	}
+	
+	private void showMessageInNewThread(String message){
+		new Thread() {
+			public void run() {
+	JOptionPane.showMessageDialog(panel,  message);
+			}}.start();
+	}
+	
+	private class buttonMoveListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			synchronized (wakeResponseGetter) {
+				moveOption = moveOptions.MOVE;
+				wakeResponseGetter.notifyAll();
+			}
+		}
+	}
+	
+	private class buttonSplitListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			synchronized (wakeResponseGetter) {
+				moveOption = moveOptions.SPLIT;
+				wakeResponseGetter.notifyAll();
+			}
+		}
+	}
+	
+	private class buttonRedetermineListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			synchronized (wakeResponseGetter) {
+				moveOption = moveOptions.REDETERMINE;
+				wakeResponseGetter.notifyAll();
+			}
+		}
+	}
+	
+	private class buttonEndListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			synchronized (wakeResponseGetter) {
+				selection = null;
+				wakeResponseGetter.notifyAll();
+			}
+		}
+	}
+	
+	private class squareButtonsListener implements ActionListener {
+		Square square;
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			synchronized (wakeResponseGetter) {
+				selection = square;
+				wakeResponseGetter.notifyAll();
+			}
+		}
+	}
+	
 	String message = "";
 	
 	public void refreshLog(){
 		for(JButton button : squares.values()){
 			Square square = squares.inverse().get(button);
-			button.setText(Chessboard.getInstance().getProbabilisticSymbolOn(square));
+			String Symbol = Chessboard.getInstance().getProbabilisticSymbolOn(square);
+			button.setText(Symbol);
 		}
 	}
 	

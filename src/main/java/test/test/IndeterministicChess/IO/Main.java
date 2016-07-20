@@ -1,22 +1,20 @@
 package test.test.IndeterministicChess.IO;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
 /**
- * Hopefully this will become the start for the new back end of the new game!
- * 
+ * The main class that lets the player make one move after the other and checks for wins or a draw.
  */
 public class Main{
 	
 	public static void main(String[] args) {
 		// Schedule a job for the event dispatch thread:
 		// creating and showing this application's GUI.
-		ResponseWindow blackWindow = new ResponseWindow(PieceColor.BLACK);
-		ResponseWindow whiteWindow = new ResponseWindow(PieceColor.WHITE);
+		generalIO blackWindow = new ResponseWindow(PieceColor.BLACK);
+		generalIO whiteWindow = new ResponseWindow(PieceColor.WHITE);
 		SwingUtilities.invokeLater(new Thread() {
 			public void run() {
 				blackWindow.showGUI();
@@ -24,7 +22,9 @@ public class Main{
 			}
 		});
 		PieceColor activePlayer = PieceColor.WHITE;
-		while(!Chessboard.getInstance().probabilisticHasLost(activePlayer)){
+		boolean isLost = false;
+		boolean isDraw = false;
+		while(!isLost && !isDraw){
 			switch(activePlayer){
 			case WHITE:
 				whiteWindow.getResponse();
@@ -34,6 +34,8 @@ public class Main{
 				break;
 			}
 			activePlayer = activePlayer.otherColor();
+			isLost = Chessboard.getInstance().probabilisticHasLost(activePlayer);
+			isDraw = Chessboard.getInstance().probabilisticHasLost(activePlayer);
 		}
 		if(activePlayer == PieceColor.BLACK){
 			blackWindow.showLose();
