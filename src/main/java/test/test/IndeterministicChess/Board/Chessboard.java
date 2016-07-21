@@ -2,6 +2,9 @@ package test.test.IndeterministicChess.Board;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.apache.commons.math3.fraction.BigFraction;
 
 import com.google.common.collect.*;
 
@@ -85,11 +88,10 @@ public class Chessboard {
 	public static Chessboard getStandardChessboard() {
 		Chessboard newBoard = new Chessboard(8);
 		try{
-			newBoard = new Chessboard(8);
 			//Add pawns
-			for(int i = 1; i <= 8; i++){
-				newBoard.addChessPiece(new Pawn(new Square(i,2), PieceColor.WHITE, newBoard));
-				newBoard.addChessPiece(new Pawn(new Square(i,7), PieceColor.BLACK, newBoard));
+			for(int x = 1; x <= 8; x++){
+				newBoard.addChessPiece(new Pawn(new Square(x,2), PieceColor.WHITE, newBoard));
+				newBoard.addChessPiece(new Pawn(new Square(x,7), PieceColor.BLACK, newBoard));
 			}
 			//Add rest
 			newBoard.addChessPiece(new Queen(new Square(4,1), PieceColor.WHITE, newBoard));
@@ -110,6 +112,50 @@ public class Chessboard {
 			newBoard.addChessPiece(new Rook(new Square(8,8), PieceColor.BLACK, newBoard));
 		}
 		catch(Exception e){
+			throw new Error("The chessboard couldn't be properly constructed.");
+		}
+		return newBoard;
+	}
+
+	public static Chessboard getFisherRandomChessboard() {
+		return getGeneralizedFisherRandomChessboard(1);
+	}
+	
+	public static Chessboard getGeneralizedFisherRandomChessboard(int splitCount) {
+		Chessboard newBoard = new Chessboard(8);
+		try{
+			ExistenceProbability probabilityEach = ExistenceProbability.fromBigFraction(new BigFraction(1, splitCount));
+			if(probabilityEach.isDead()){
+				throw new Exception("Cant't split so fine!");
+			}
+			for(int i = 0; i < splitCount; i++){
+				//Add pawns
+				for(int x = 1; x <= 8; x++){
+					newBoard.addChessPiece(new Pawn(new Square(x,2), PieceColor.WHITE, newBoard));
+					newBoard.addChessPiece(new Pawn(new Square(x,7), PieceColor.BLACK, newBoard));
+				}
+				//Each are the sets {1,2,3,4,5,6,7,8}
+				List<Integer> blackSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
+				List<Integer> whiteSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
+				//In Fisher Random Chess the pieces on the home rows are randomly shuffled
+				Collections.shuffle(blackSequence);
+				Collections.shuffle(whiteSequence);
+				//Add rest
+				for(PieceColor color : PieceColor.values()){
+					int yValue = color == PieceColor.BLACK ? 8 : 1;
+					newBoard.addChessPiece(new Queen(new Square(blackSequence.get(0), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new King(new Square(blackSequence.get(1), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(2), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(3), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(4), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(5), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(6), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(7), yValue), color, probabilityEach, newBoard));
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
 			throw new Error("The chessboard couldn't be properly constructed.");
 		}
 		return newBoard;

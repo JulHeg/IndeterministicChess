@@ -17,11 +17,11 @@ public class ExistenceProbability {
 
 	public static final BigFraction ONE_TENTH = new BigFraction(1, 10);
 
-	public ExistenceProbability formBigFraction(BigFraction bigFraction) throws Exception {
-		if (ONE.greaterEqual(bigFraction) && ZERO.lessEqual(bigFraction)) {
+	public static ExistenceProbability fromBigFraction(BigFraction bigFraction) throws Exception {
+		if (!ONE.greaterEqual(bigFraction) || !ZERO.lessEqual(bigFraction)) {
 			throw new Exception("An ExistanceProbability must be between one and zero!");
 		}
-		return new ExistenceProbability(probability);
+		return new ExistenceProbability(bigFraction);
 	}
 
 	public ExistenceProbability getHalf() {
