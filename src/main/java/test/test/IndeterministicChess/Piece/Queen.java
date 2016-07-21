@@ -27,7 +27,7 @@ public class Queen extends Piece {
 		super(piece);
 	}
 
-	protected Queen quasiClone() {
+	protected Queen myClone() {
 		return new Queen(this);
 	}
 

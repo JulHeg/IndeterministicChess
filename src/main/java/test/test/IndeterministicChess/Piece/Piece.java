@@ -85,16 +85,15 @@ public abstract class Piece {
 			if (!chessboard.isInBoard(square)) {
 				break;
 			}
-			runningMin = runningMin.cap(chessboard.ProbabilityLeft(square, getPieceColor()));
+			ExistenceProbability friendlyProbability = chessboard.ProbabilityOn(square, getPieceColor());
+			ExistenceProbability enemyProbability = chessboard.ProbabilityOn(square, getPieceColor().otherColor());
+			runningMin = runningMin.cap(friendlyProbability.getRest());
 			if (runningMin.greaterEqual(getExistanceProbability())) {
 				results.add(square);
 			} else {
 				break;
 			}
-			ExistenceProbability enemyProbability = chessboard.ProbabilityOn(square, getPieceColor().otherColor());
-			if(!enemyProbability.equals(ExistenceProbability.ZERO)){
-				runningMin = runningMin.cap(enemyProbability.add(chessboard.ProbabilityOn(square, getPieceColor())).getRest());
-			}
+			runningMin = runningMin.cap(enemyProbability.add(friendlyProbability).getRest());
 		}
 		return results;
 	}
@@ -107,7 +106,7 @@ public abstract class Piece {
 		return !getPossibleNextSquares().isEmpty();
 	}
 	
-	protected abstract Piece quasiClone();
+	protected abstract Piece myClone();
 
 	public void incorporatePiece(Piece other) {
 		existanceProbability = existanceProbability.add(other.getExistanceProbability());
@@ -118,8 +117,17 @@ public abstract class Piece {
 			throw new Exception("Piece too small to split!");
 		}
 		existanceProbability = existanceProbability.getHalf();
-		Piece otherHalf = quasiClone();
-		chessboard.addChessPiece(otherHalf);
+		Piece otherHalf = myClone();
 		return otherHalf;
+	}
+	
+	public Piece cloneOfHalf(){
+		try{
+		return myClone().splitOfHalf();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new Error(e);
+		}
 	}
 }

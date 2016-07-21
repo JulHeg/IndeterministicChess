@@ -44,13 +44,8 @@ public class Chessboard {
 	}
 
 	public Set<Piece> getPiecesOnSquare(Square square) {
-		Set<Piece> result = new HashSet<Piece>();
-		for (Piece piece : getAllPieces()) {
-			if (piece.getPosition().equals(square)) {
-				result.add(piece);
-			}
-		}
-		return result;
+		return getAllPieces().stream().filter(piece -> piece.getPosition().equals(square))
+				.collect(Collectors.toSet());
 	}
 
 	public boolean isInBoard(Square square) {
@@ -58,8 +53,8 @@ public class Chessboard {
 	}
 
 	public ExistenceProbability ProbabilityOn(Square square, PieceColor color) {
-		Set<ExistenceProbability> existanceProbabilities = getPiecesOnSquare(square, color).stream()
-				.map(Piece::getExistanceProbability).collect(Collectors.toSet());
+		List<ExistenceProbability> existanceProbabilities = getPiecesOnSquare(square, color).stream()
+				.map(Piece::getExistanceProbability).collect(Collectors.toList());
 		return ExistenceProbability.sumProbability(existanceProbabilities);
 	}
 
@@ -83,6 +78,10 @@ public class Chessboard {
 	
 	public void removePiece(Piece piece){
 		allPieces.remove(piece);
+	}
+
+	public static Chessboard getEmptyChessboard() {
+		return new Chessboard(8);
 	}
 
 	public static Chessboard getStandardChessboard() {
@@ -117,15 +116,17 @@ public class Chessboard {
 		return newBoard;
 	}
 
-	public static Chessboard getFisherRandomChessboard() {
-		return getGeneralizedFisherRandomChessboard(1);
+	public static Chessboard getFischerRandomChessboard() {
+		return getGeneralizedFischerRandomChessboard(1);
 	}
 	
-	public static Chessboard getGeneralizedFisherRandomChessboard(int splitCount) {
+	public static Chessboard getGeneralizedFischerRandomChessboard(int splitCount) {
 		Chessboard newBoard = new Chessboard(8);
 		try{
 			ExistenceProbability probabilityEach = ExistenceProbability.fromBigFraction(new BigFraction(1, splitCount));
 			if(probabilityEach.isDead()){
+				System.out.println(probabilityEach);
+				System.out.println(probabilityEach.isDead());
 				throw new Exception("Cant't split so fine!");
 			}
 			for(int i = 0; i < splitCount; i++){
@@ -308,7 +309,7 @@ public class Chessboard {
 	}
 	
 	public boolean probabilisticHasLost(PieceColor player){
-		double totalKingProbability = ExistenceProbability.sumProbability(getAllPiecesOf(player).stream().filter(piece -> piece instanceof King).map(Piece::getExistanceProbability).collect(Collectors.toSet())).asDouble();
+		double totalKingProbability = ExistenceProbability.sumProbability(getAllPiecesOf(player).stream().filter(piece -> piece instanceof King).map(Piece::getExistanceProbability).collect(Collectors.toList())).asDouble();
 		return random.nextDouble() > totalKingProbability;
 	}
 	

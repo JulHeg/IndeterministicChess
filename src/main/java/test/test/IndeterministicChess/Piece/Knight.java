@@ -26,7 +26,7 @@ public class Knight extends Piece {
 		super(piece);
 	}
 
-	protected Knight quasiClone() {
+	protected Knight myClone() {
 		return new Knight(this);
 	}
 

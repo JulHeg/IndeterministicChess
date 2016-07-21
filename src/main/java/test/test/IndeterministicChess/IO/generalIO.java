@@ -110,7 +110,7 @@ public abstract class generalIO {
 	}
 	
 	protected void makeSplittingMove(){
-		Set<Piece> splittablePieces = chessboard.getAllPiecesOf(player).stream().filter(Piece::canSplit).filter(Piece::canMove).collect(Collectors.toSet());
+		Set<Piece> splittablePieces = chessboard.getAllPiecesOf(player).stream().filter(Piece::canSplit).filter(piece -> piece.cloneOfHalf().canMove()).collect(Collectors.toSet());
 		//Get the piece that is to be moved
 		Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(splittablePieces));
 		Set<Piece> splittablePiecesThere = chessboard.getPiecesOnSquare(thisSelection,player).stream().filter(Piece::canSplit).collect(Collectors.toSet());
@@ -119,6 +119,7 @@ public abstract class generalIO {
 		Piece otherHalf;
 		try {
 			otherHalf = pieceToMove.splitOfHalf();
+			chessboard.addChessPiece(otherHalf);
 		} catch (Exception e1) {
 			throw new Error(e1);
 		}

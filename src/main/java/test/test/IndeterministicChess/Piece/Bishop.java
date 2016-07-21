@@ -26,7 +26,7 @@ public class Bishop extends Piece {
 		super(piece);
 	}
 
-	protected Bishop quasiClone() {
+	protected Bishop myClone() {
 		return new Bishop(this);
 	}
 

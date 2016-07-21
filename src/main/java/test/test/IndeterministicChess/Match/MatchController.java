@@ -31,10 +31,10 @@ public class MatchController extends Thread{
 		while(!isLost && !isDraw){
 			switch(activePlayer){
 			case WHITE:
-				blackIO.getResponse();
+				whiteIO.getResponse();
 				break;
 			case BLACK:
-				whiteIO.getResponse();
+				blackIO.getResponse();
 				break;
 			}
 			activePlayer = activePlayer.otherColor();
