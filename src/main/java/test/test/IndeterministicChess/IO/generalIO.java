@@ -5,14 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.swing.JOptionPane;
-
 import com.google.common.collect.Sets;
 
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
 public abstract class generalIO {
+	protected final Chessboard chessboard;
 	
 	final public PieceColor player;
 
@@ -33,11 +32,11 @@ public abstract class generalIO {
 	protected abstract void enableMoveEnding();
 
 	protected void checkForPromotion(){
-		for(Pawn pawn : Chessboard.getInstance().getPawnsToBePromoted()){
+		for(Pawn pawn : chessboard.getPawnsToBePromoted()){
 			Set<String> options = new HashSet<String>(Arrays.asList(Chessboard.promotionPositions));
 			String userChoice =	selectPromotionOption(options, pawn.getPosition());
 			try {
-				Chessboard.getInstance().changeRole(pawn, userChoice);
+				chessboard.changeRole(pawn, userChoice);
 			} catch (Exception e) {
 				throw new Error(e);
 			}
@@ -49,8 +48,9 @@ public abstract class generalIO {
 	 */
 	protected abstract Piece selectAPieceOf(Set<Piece> pieces);	
 	
-	public generalIO(PieceColor player){
+	public generalIO(PieceColor player, Chessboard chessboard){
 		this.player = player;
+		this.chessboard = chessboard;
 	}
 	
 	//In percent, therefore between 0 and 100.
@@ -65,7 +65,7 @@ public abstract class generalIO {
 	}
 
 	protected Set<Piece> getActuallyMovablePieces(){
-		return Chessboard.getInstance().getAllPiecesOf(player).stream().filter(piece -> piece.getExistanceProbability().asDouble() * 100 <= getAmountOfMoveLeft() && piece.canMove()).collect(Collectors.toSet());
+		return chessboard.getAllPiecesOf(player).stream().filter(piece -> piece.getExistanceProbability().asDouble() * 100 <= getAmountOfMoveLeft() && piece.canMove()).collect(Collectors.toSet());
 	}
 
 	protected Set<Piece> getActuallyMovablePiecesOn(Square square){
@@ -93,27 +93,27 @@ public abstract class generalIO {
 			thisSelection = selectOneOfTheseSquares(nextSquares);
 			//Move
 			try {
-				Set<Piece> piecesOnSelectionBefore = Chessboard.getInstance().getPiecesOnSquare(thisSelection);
-				Chessboard.getInstance().movePiece(pieceToMove, thisSelection);
+				Set<Piece> piecesOnSelectionBefore = chessboard.getPiecesOnSquare(thisSelection);
+				chessboard.movePiece(pieceToMove, thisSelection);
 				Double amountOfMoveLeft = getAmountOfMoveLeft() - (100 * pieceToMove.getExistanceProbability().asDouble());
 				setAmountOfMoveLeft(amountOfMoveLeft.intValue());
 				checkForPromotion();
 				//Adds all pieces that are new on the square, to account for promoting
-				alreadyMovedPieces.addAll(Sets.difference(Chessboard.getInstance().getPiecesOnSquare(thisSelection), piecesOnSelectionBefore));
+				alreadyMovedPieces.addAll(Sets.difference(chessboard.getPiecesOnSquare(thisSelection), piecesOnSelectionBefore));
 			} 
 			catch (Exception e) {
 				e.printStackTrace();
 			}
 			enableMoveEnding();//At least one move required
 		}
-		Chessboard.getInstance().combinePieces();
+		chessboard.combinePieces();
 	}
 	
 	protected void makeSplittingMove(){
-		Set<Piece> splittablePieces = Chessboard.getInstance().getAllPiecesOf(player).stream().filter(Piece::canSplit).filter(Piece::canMove).collect(Collectors.toSet());
+		Set<Piece> splittablePieces = chessboard.getAllPiecesOf(player).stream().filter(Piece::canSplit).filter(Piece::canMove).collect(Collectors.toSet());
 		//Get the piece that is to be moved
 		Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(splittablePieces));
-		Set<Piece> splittablePiecesThere = Chessboard.getInstance().getPiecesOnSquare(thisSelection,player).stream().filter(Piece::canSplit).collect(Collectors.toSet());
+		Set<Piece> splittablePiecesThere = chessboard.getPiecesOnSquare(thisSelection,player).stream().filter(Piece::canSplit).collect(Collectors.toSet());
 		Piece pieceToMove = selectAPieceOf(splittablePiecesThere);
 		//Get the piece's target square
 		Piece otherHalf;
@@ -125,9 +125,9 @@ public abstract class generalIO {
 		//Move one Half
 		thisSelection = selectOneOfTheseSquares(otherHalf.getPossibleNextSquares());
 		try {
-			Chessboard.getInstance().movePiece(otherHalf, thisSelection);
+			chessboard.movePiece(otherHalf, thisSelection);
 			checkForPromotion();
-			Chessboard.getInstance().combinePieces();
+			chessboard.combinePieces();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -136,9 +136,9 @@ public abstract class generalIO {
 		possibleTargets.add(pieceToMove.getPosition());
 		thisSelection = selectOneOfTheseSquares(possibleTargets);
 		try {
-			Chessboard.getInstance().movePiece(pieceToMove, thisSelection);
+			chessboard.movePiece(pieceToMove, thisSelection);
 			checkForPromotion();
-			Chessboard.getInstance().combinePieces();
+			chessboard.combinePieces();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

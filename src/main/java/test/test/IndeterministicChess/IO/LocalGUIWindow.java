@@ -42,8 +42,8 @@ public class LocalGUIWindow extends generalIO{
 		super.setAmountOfMoveLeft(target);
 	}
 	
-	public LocalGUIWindow(PieceColor player) {
-		super(player);
+	public LocalGUIWindow(PieceColor player, Chessboard chessboard) {
+		super(player, chessboard);
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
@@ -128,7 +128,7 @@ public class LocalGUIWindow extends generalIO{
 					makeMovingMove();
 					break;
 				case REDETERMINE:
-					Chessboard.getInstance().redetermine();
+					chessboard.redetermine();
 					break;
 				case SPLIT:
 					makeSplittingMove();
@@ -309,7 +309,7 @@ public class LocalGUIWindow extends generalIO{
 	public void refreshLog(){
 		for(JButton button : squares.values()){
 			Square square = squares.inverse().get(button);
-			String Symbol = Chessboard.getInstance().getProbabilisticSymbolOn(square);
+			String Symbol = chessboard.getProbabilisticSymbolOn(square);
 			button.setText(Symbol);
 		}
 	}

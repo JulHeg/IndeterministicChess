@@ -15,8 +15,9 @@ public class Main{
 	public static void main(String[] args) {
 		// Schedule a job for the event dispatch thread:
 		// creating and showing this application's GUI.
-		generalIO blackWindow = new LocalGUIWindow(PieceColor.BLACK);
-		generalIO whiteWindow = new LocalGUIWindow(PieceColor.WHITE);
+		Chessboard chessboard = Chessboard.getStandardChessboard();
+		generalIO blackWindow = new LocalGUIWindow(PieceColor.BLACK, chessboard);
+		generalIO whiteWindow = new LocalGUIWindow(PieceColor.WHITE, chessboard);
 		SwingUtilities.invokeLater(new Thread() {
 			public void run() {
 				blackWindow.showGUI();
@@ -36,8 +37,8 @@ public class Main{
 				break;
 			}
 			activePlayer = activePlayer.otherColor();
-			isLost = Chessboard.getInstance().probabilisticHasLost(activePlayer);
-			isDraw = Chessboard.getInstance().probabilisticHasLost(activePlayer);
+			isLost = chessboard.probabilisticHasLost(activePlayer);
+			isDraw = chessboard.probabilisticHasLost(activePlayer);
 		}
 		if(activePlayer == PieceColor.BLACK){
 			blackWindow.showLose();

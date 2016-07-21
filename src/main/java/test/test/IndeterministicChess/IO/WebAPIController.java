@@ -21,7 +21,7 @@ public class WebAPIController {
     public void squareButtonPressed(@RequestParam(value="xPos", defaultValue="-1") String x, @RequestParam(value="yPos", defaultValue="-1") String y) {
     	try{
     		Square pressedSquare = new Square(Integer.parseInt(x), Integer.parseInt(y));
-    		if(Chessboard.getInstance().isInBoard(pressedSquare)){
+    		if(Chessboard.getStandardChessboard().isInBoard(pressedSquare)){
     			System.out.println("The Square " + pressedSquare + " has been pressed!");
     		}
     	}

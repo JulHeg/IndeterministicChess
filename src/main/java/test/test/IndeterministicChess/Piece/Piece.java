@@ -23,20 +23,21 @@ public abstract class Piece {
 	
 	public abstract String getSymbol();
 
-	public final Chessboard chessboard = Chessboard.getInstance();
+	public final Chessboard chessboard;
 
-	public Piece(Square position, PieceColor owner) {
-		this(position, owner, ExistenceProbability.ONE);
+	public Piece(Square position, PieceColor owner, Chessboard chessboard) {
+		this(position, owner, ExistenceProbability.ONE, chessboard);
 	}
 
 	public Piece(Piece original) {
-		this(original.position, original.owner, original.existanceProbability);
+		this(original.position, original.owner, original.existanceProbability, original.chessboard);
 	}
 
-	public Piece(Square position, PieceColor owner, ExistenceProbability existanceProbability) {
+	public Piece(Square position, PieceColor owner, ExistenceProbability existanceProbability, Chessboard chessboard) {
 		this.position = position;
 		this.owner = owner;
 		this.existanceProbability = existanceProbability;
+		this.chessboard = chessboard;
 	}
 	
 	public void setProbabilityToFull(){

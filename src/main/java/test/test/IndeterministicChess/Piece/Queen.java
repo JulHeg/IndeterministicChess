@@ -2,6 +2,7 @@ package test.test.IndeterministicChess.Piece;
 
 import java.util.*;
 
+import test.test.IndeterministicChess.Board.Chessboard;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Queen extends Piece {
@@ -14,12 +15,12 @@ public class Queen extends Piece {
 		return getPieceColor() == PieceColor.WHITE ? "♕" : "♛";
 	}
 	
-	public Queen(Square square, PieceColor owner) {
-		super(square, owner);
+	public Queen(Square square, PieceColor owner, Chessboard chessboard) {
+		super(square, owner, chessboard);
 	}
 
-	public Queen(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
-		super(square, owner, existenceProbability);
+	public Queen(Square square, PieceColor owner, ExistenceProbability existenceProbability, Chessboard chessboard) {
+		super(square, owner, existenceProbability, chessboard);
 	}
 
 	public Queen(Piece piece) {

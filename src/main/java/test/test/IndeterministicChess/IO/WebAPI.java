@@ -11,6 +11,6 @@ public class WebAPI {
     }
 
 	public String getContent() {
-        return Chessboard.getInstance().toProbabilisticString();
+        return Chessboard.getStandardChessboard().toProbabilisticString();
     }
 }

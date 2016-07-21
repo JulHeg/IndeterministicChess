@@ -2,6 +2,7 @@ package test.test.IndeterministicChess.Piece;
 
 import java.util.*;
 
+import test.test.IndeterministicChess.Board.Chessboard;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Pawn extends Piece {
@@ -13,12 +14,12 @@ public class Pawn extends Piece {
 		return getPieceColor() == PieceColor.WHITE ? "♙" : "♟";
 	}
 
-	public Pawn(Square square, PieceColor owner) {
-		super(square, owner);
+	public Pawn(Square square, PieceColor owner, Chessboard chessboard) {
+		super(square, owner, chessboard);
 	}
 
-	public Pawn(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
-		super(square, owner, existenceProbability);
+	public Pawn(Square square, PieceColor owner, ExistenceProbability existenceProbability, Chessboard chessboard) {
+		super(square, owner, existenceProbability, chessboard);
 	}
 
 	public Pawn(Piece piece) {

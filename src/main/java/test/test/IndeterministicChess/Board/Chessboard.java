@@ -8,12 +8,9 @@ import com.google.common.collect.*;
 import test.test.IndeterministicChess.Piece.*;
 
 /**
- * A singleton class, the one chessboard where the game happens.
+ * A class for the one chessboard where the game happens.
  */
-public class Chessboard {
-
-	private static Chessboard currentChessboard = getInstance();
-	
+public class Chessboard {	
 	private Random random = new Random();
 
 	private final int size;
@@ -85,38 +82,37 @@ public class Chessboard {
 		allPieces.remove(piece);
 	}
 
-	public static Chessboard getInstance() {
-		if (currentChessboard == null) {
-			try{
-				currentChessboard = new Chessboard(8);
-				//Add pawns
-				for(int i = 1; i <= 8; i++){
-					currentChessboard.addChessPiece(new Pawn(new Square(i,2), PieceColor.WHITE));
-					currentChessboard.addChessPiece(new Pawn(new Square(i,7), PieceColor.BLACK));
-				}
-				//Add rest
-				currentChessboard.addChessPiece(new Queen(new Square(4,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Queen(new Square(4,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new King(new Square(5,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new King(new Square(5,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Bishop(new Square(3,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Bishop(new Square(3,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Bishop(new Square(6,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Bishop(new Square(6,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Knight(new Square(2,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Knight(new Square(2,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Knight(new Square(7,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Knight(new Square(7,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Rook(new Square(1,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Rook(new Square(1,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Rook(new Square(8,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Rook(new Square(8,8), PieceColor.BLACK));
+	public static Chessboard getStandardChessboard() {
+		Chessboard newBoard = new Chessboard(8);
+		try{
+			newBoard = new Chessboard(8);
+			//Add pawns
+			for(int i = 1; i <= 8; i++){
+				newBoard.addChessPiece(new Pawn(new Square(i,2), PieceColor.WHITE, newBoard));
+				newBoard.addChessPiece(new Pawn(new Square(i,7), PieceColor.BLACK, newBoard));
 			}
-			catch(Exception e){
-				throw new Error("The chessboard couldn't be properly constructed.");
-			}
+			//Add rest
+			newBoard.addChessPiece(new Queen(new Square(4,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Queen(new Square(4,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new King(new Square(5,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new King(new Square(5,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(3,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(3,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(6,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(6,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(2,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(2,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(7,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(7,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(1,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(1,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(8,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(8,8), PieceColor.BLACK, newBoard));
 		}
-		return currentChessboard;
+		catch(Exception e){
+			throw new Error("The chessboard couldn't be properly constructed.");
+		}
+		return newBoard;
 	}
 
 	public Set<Piece> getAllPieces() {
