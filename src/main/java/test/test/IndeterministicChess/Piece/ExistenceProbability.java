@@ -36,12 +36,6 @@ public class ExistenceProbability {
 		return probability.doubleValue();
 	}
 
-	public boolean isDead() {
-		return !lessEqual(ONE_TENTH);
-	}
-	
-
-
 	@Override
 	public int hashCode() {
 		return probability.getNumerator().hashCode() ^ probability.getDenominator().hashCode();

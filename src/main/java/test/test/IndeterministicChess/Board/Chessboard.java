@@ -18,6 +18,8 @@ public class Chessboard {
 
 	private final int size;
 
+	private final ChessboardOptions chessboardOptions;
+	
 	public int getSize() {
 		return size;
 	}
@@ -26,7 +28,8 @@ public class Chessboard {
 
 	private final Table<Integer, Integer, Square> squares;
 
-	private Chessboard(int size) {
+	private Chessboard(int size, ChessboardOptions chessboardOptions) {
+		this.chessboardOptions = chessboardOptions;
 		this.size = size;
 		ImmutableTable.Builder<Integer, Integer, Square> builder = ImmutableTable.builder();
 		for (int x = 1; x <= size; x++) {
@@ -81,11 +84,11 @@ public class Chessboard {
 	}
 
 	public static Chessboard getEmptyChessboard() {
-		return new Chessboard(8);
+		return new Chessboard(8, ChessboardOptions.standardValue);
 	}
 
 	public static Chessboard getStandardChessboard() {
-		Chessboard newBoard = new Chessboard(8);
+		Chessboard newBoard = new Chessboard(8, ChessboardOptions.standardValue);
 		try{
 			//Add pawns
 			for(int x = 1; x <= 8; x++){
@@ -115,18 +118,20 @@ public class Chessboard {
 		}
 		return newBoard;
 	}
+	
+	public boolean isDead(ExistenceProbability existenceProbability){
+		return chessboardOptions.getMinimalSurvivalProbability().lessEqual(existenceProbability);
+	}
 
 	public static Chessboard getFischerRandomChessboard() {
 		return getGeneralizedFischerRandomChessboard(1);
 	}
 	
 	public static Chessboard getGeneralizedFischerRandomChessboard(int splitCount) {
-		Chessboard newBoard = new Chessboard(8);
+		Chessboard newBoard = new Chessboard(8, ChessboardOptions.standardValue);
 		try{
 			ExistenceProbability probabilityEach = ExistenceProbability.fromBigFraction(new BigFraction(1, splitCount));
-			if(probabilityEach.isDead()){
-				System.out.println(probabilityEach);
-				System.out.println(probabilityEach.isDead());
+			if(newBoard.isDead(probabilityEach)){
 				throw new Exception("Cant't split so fine!");
 			}
 			//Add pawns
@@ -176,7 +181,7 @@ public class Chessboard {
 		}
 		ExistenceProbability totalProbabilityOfOtherColorBefore = ProbabilityOn(target, piece.getPieceColor().otherColor());
 		//=1-max{0,1-newPiece/oldPieces}=1-min{1,newPiece/totalProbabilityOfOtherColorBefore}
-		if(!totalProbabilityOfOtherColorBefore.isDead())
+		if(!isDead(totalProbabilityOfOtherColorBefore))
 		{
 			ExistenceProbability mulitplier = piece.getExistanceProbability()
 					.divide(totalProbabilityOfOtherColorBefore).cap(ExistenceProbability.ONE).getRest();
@@ -193,7 +198,7 @@ public class Chessboard {
 			throw new Exception("Taken piece is not actually on the board!");
 		}
 		ExistenceProbability newProbability = piece.getExistanceProbability().multiply(multiplier);
-		if(newProbability.isDead()){
+		if(isDead(newProbability)){
 			removePiece(piece);
 		}
 		else{

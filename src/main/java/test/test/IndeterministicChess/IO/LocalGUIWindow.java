@@ -1,8 +1,14 @@
 package test.test.IndeterministicChess.IO;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 
@@ -190,12 +196,15 @@ public class LocalGUIWindow extends generalIO{
 	Thread responseGetter;
 	
 	protected String selectPromotionOption(Set<String> options, Square postion){
-		Object userChoice = JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), postion), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options.toArray(), (Object)options.iterator().next());
+		List<String> translations = options.stream().map(bundle::getString).collect(Collectors.toList());
+		System.out.println(translations);
+		Object userChoice = JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), postion), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, translations.toArray(), translations.get(0));
 		if(userChoice == null) {
 			//If the user cancels the dialogue, just ask again
 			userChoice = selectPromotionOption(options, postion);
 		}
-		return (String) userChoice;
+		final String finalUserChoice = (String)userChoice;
+		return options.stream().filter(option -> bundle.getString(option).equals(finalUserChoice)).findAny().get();
 	}
 	
 	private void deselectAll(){
@@ -215,14 +224,14 @@ public class LocalGUIWindow extends generalIO{
 			return pieces.iterator().next();
 		}
 		else if(pieces.size() > 1){
-			Object[] options = pieces.stream().map(Piece::getTypeName).toArray(String[]::new);
+			String[] options = pieces.stream().map(Piece::getTypeName).map(bundle::getString).toArray(String[]::new);
 			Object userChoice = JOptionPane.showInputDialog(frame, bundle.getString("pieceSelectionDialogueQuestion"), bundle.getString("pieceSelectionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 			if(userChoice == null){
 				return selectAPieceOf(pieces);
 			}
 			else {
 				String selectedPiece =	(String)userChoice;
-				return pieces.stream().filter(piece -> piece.getTypeName().equals(selectedPiece)).findAny().get();
+				return pieces.stream().filter(piece -> bundle.getString(piece.getTypeName()).equals(selectedPiece)).findAny().get();
 			}
 		}
 		else {
