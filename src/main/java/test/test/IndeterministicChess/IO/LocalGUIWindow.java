@@ -47,7 +47,7 @@ public class LocalGUIWindow extends generalIO{
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
-    	bundle = ResourceBundle.getBundle("i18n");
+    	bundle = ResourceBundle.getBundle("I18n/i18n");
 		bundle.getString("applicationTitle");
 		bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName");
 		frame = new JFrame(bundle.getString("applicationTitle") + " - " + bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName"));
