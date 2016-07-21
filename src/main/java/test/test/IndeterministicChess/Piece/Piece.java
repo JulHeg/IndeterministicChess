@@ -130,4 +130,9 @@ public abstract class Piece {
 			throw new Error(e);
 		}
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		return this == o;
+	}
 }

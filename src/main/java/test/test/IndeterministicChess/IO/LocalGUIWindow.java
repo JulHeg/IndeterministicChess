@@ -110,54 +110,31 @@ public class LocalGUIWindow extends generalIO{
 		buttonPanel.add(buttonEnd);
 		panel.add(buttonPanel,BorderLayout.PAGE_END);
 	}
-	
-	public void getResponse(){
-		responseGetter =  new Thread() {
-			public void run() {
-				setAmountOfMoveLeft(100);
-				buttonMove.setEnabled(true);
-				buttonSplit.setEnabled(true);
-				buttonRedetermine.setEnabled(true);
-				buttonEnd.setEnabled(false);
-				try {
-					synchronized (wakeResponseGetter) {
-						wakeResponseGetter.wait();
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				buttonMove.setEnabled(false);
-				buttonSplit.setEnabled(false);
-				buttonRedetermine.setEnabled(false);
-				switch(moveOption){
-				case MOVE:
-					makeMovingMove();
-					break;
-				case REDETERMINE:
-					chessboard.redetermine();
-					break;
-				case SPLIT:
-					makeSplittingMove();
-					break;
-				}
-				buttonEnd.setEnabled(false);
-				deselectAll();
+
+	@Override
+	protected moveOptions getMoveOption() {
+		buttonMove.setEnabled(true);
+		buttonSplit.setEnabled(true);
+		buttonRedetermine.setEnabled(true);
+		buttonEnd.setEnabled(false);
+		try {
+			synchronized (wakeResponseGetter) {
+				wakeResponseGetter.wait();
 			}
-		};
-		responseGetter.start();
-		synchronized (responseGetter) {
-			try {
-				responseGetter.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		buttonMove.setEnabled(false);
+		buttonSplit.setEnabled(false);
+		buttonRedetermine.setEnabled(false);
+		return moveOption;
 	}
 
 	@Override
 	protected Square selectOneOfTheseSquares(Set<Square> theseSquares) {
 		selectOnly(theseSquares);
 		waitForGUI();
+		deselectAll();
 		return selection;
 	}
 	/**
@@ -170,11 +147,7 @@ public class LocalGUIWindow extends generalIO{
 		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
-		squares.values().stream().forEach(button -> setButtonEnabled(button, false));
-	}
-	
-	public enum moveOptions {
-		MOVE, SPLIT, REDETERMINE
+		deselectAll();
 	}
 	
 	private void waitForGUI(){
@@ -192,8 +165,6 @@ public class LocalGUIWindow extends generalIO{
 	public moveOptions moveOption = moveOptions.MOVE;
 	
 	public Square selection = new Square(-1,-1);
-	
-	Thread responseGetter;
 	
 	protected String selectPromotionOption(Set<String> options, Square postion){
 		List<String> translations = options.stream().map(bundle::getString).collect(Collectors.toList());
@@ -349,5 +320,10 @@ public class LocalGUIWindow extends generalIO{
 	@Override
 	protected void enableMoveEnding() {
 		buttonEnd.setEnabled(true);
+	}
+
+	@Override
+	protected void disableMoveEnding() {
+		buttonEnd.setEnabled(false);
 	}
 }

@@ -14,8 +14,6 @@ public abstract class generalIO {
 	protected final Chessboard chessboard;
 	
 	final public PieceColor player;
-
-	public abstract void getResponse();
 	
 	protected abstract Square selectOneOfTheseSquares(Set<Square> theseSquares);
 	
@@ -30,6 +28,30 @@ public abstract class generalIO {
 	protected abstract String selectPromotionOption(Set<String> options, Square square);
 	
 	protected abstract void enableMoveEnding();
+	
+	protected abstract void disableMoveEnding();
+
+	protected abstract moveOptions getMoveOption();
+	
+	public enum moveOptions {
+		MOVE, SPLIT, REDETERMINE
+	}
+
+	public void getResponse(){
+		setAmountOfMoveLeft(100);
+		moveOptions chosenMoveOoption = getMoveOption();
+		switch(chosenMoveOoption){
+		case MOVE:
+			makeMovingMove();
+			break;
+		case REDETERMINE:
+			chessboard.redetermine();
+			break;
+		case SPLIT:
+			makeSplittingMove();
+			break;
+		}
+}
 
 	protected void checkForPromotion(){
 		for(Pawn pawn : chessboard.getPawnsToBePromoted()){
@@ -83,11 +105,13 @@ public abstract class generalIO {
 			if(movablePieces.isEmpty()){
 				break;
 			}
+			System.out.println("test");
 			Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(Sets.difference(movablePieces, alreadyMovedPieces)));
 			if(thisSelection == null){//i.e. the exit button was pushed
 				break;
 			}
 			Piece pieceToMove = selectAPieceOf(Sets.difference(getActuallyMovablePiecesOn(thisSelection), alreadyMovedPieces));
+			System.out.println("test");
 			Set<Square> nextSquares = pieceToMove.getPossibleNextSquares();
 			//Get the piece's target square
 			thisSelection = selectOneOfTheseSquares(nextSquares);
@@ -106,6 +130,7 @@ public abstract class generalIO {
 			}
 			enableMoveEnding();//At least one move required
 		}
+		disableMoveEnding();
 		chessboard.combinePieces();
 	}
 	

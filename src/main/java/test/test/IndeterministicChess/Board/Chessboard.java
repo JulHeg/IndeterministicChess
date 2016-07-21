@@ -14,7 +14,7 @@ import test.test.IndeterministicChess.Piece.*;
  * A class for the one chessboard where the game happens.
  */
 public class Chessboard {	
-	private Random random = new Random();
+	public Random random = new Random();
 
 	private final int size;
 
@@ -280,7 +280,7 @@ public class Chessboard {
 	}
 	
 
-	public String toProbabilisticString() {
+	public String getProbabilisticString() {
 		String result = "";
 		for(int y = 1; y <= getSize(); y++){
 			for(int x = 1; x <= getSize(); x++){
