@@ -129,19 +129,19 @@ public class Chessboard {
 				System.out.println(probabilityEach.isDead());
 				throw new Exception("Cant't split so fine!");
 			}
+			//Add pawns
+			for(int x = 1; x <= 8; x++){
+				newBoard.addChessPiece(new Pawn(new Square(x,2), PieceColor.WHITE, newBoard));
+				newBoard.addChessPiece(new Pawn(new Square(x,7), PieceColor.BLACK, newBoard));
+			}
+			//Add rest
 			for(int i = 0; i < splitCount; i++){
-				//Add pawns
-				for(int x = 1; x <= 8; x++){
-					newBoard.addChessPiece(new Pawn(new Square(x,2), PieceColor.WHITE, newBoard));
-					newBoard.addChessPiece(new Pawn(new Square(x,7), PieceColor.BLACK, newBoard));
-				}
 				//Each are the sets {1,2,3,4,5,6,7,8}
 				List<Integer> blackSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
 				List<Integer> whiteSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
 				//In Fisher Random Chess the pieces on the home rows are randomly shuffled
 				Collections.shuffle(blackSequence);
 				Collections.shuffle(whiteSequence);
-				//Add rest
 				for(PieceColor color : PieceColor.values()){
 					int yValue = color == PieceColor.BLACK ? 8 : 1;
 					newBoard.addChessPiece(new Queen(new Square(blackSequence.get(0), yValue), color, probabilityEach, newBoard));
