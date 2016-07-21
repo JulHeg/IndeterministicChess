@@ -2,6 +2,7 @@ package test.test.IndeterministicChess.Piece;
 
 import java.util.*;
 
+import test.test.IndeterministicChess.Board.Chessboard;
 import test.test.IndeterministicChess.Board.Square;
 
 public class Rook extends Piece {
@@ -13,19 +14,19 @@ public class Rook extends Piece {
 		return getPieceColor() == PieceColor.WHITE ? "♖" : "♜";
 	}
 
-	public Rook(Square square, PieceColor owner) {
-		super(square, owner);
+	public Rook(Square square, PieceColor owner, Chessboard chessboard) {
+		super(square, owner, chessboard);
 	}
 
-	public Rook(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
-		super(square, owner, existenceProbability);
+	public Rook(Square square, PieceColor owner, ExistenceProbability existenceProbability, Chessboard chessboard) {
+		super(square, owner, existenceProbability, chessboard);
 	}
 
 	public Rook(Piece piece) {
 		super(piece);
 	}
 
-	protected Rook quasiClone() {
+	protected Rook myClone() {
 		return new Rook(this);
 	}
 

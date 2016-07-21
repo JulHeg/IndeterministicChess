@@ -2,18 +2,18 @@ package test.test.IndeterministicChess.Board;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.apache.commons.math3.fraction.BigFraction;
 
 import com.google.common.collect.*;
 
 import test.test.IndeterministicChess.Piece.*;
 
 /**
- * A singleton class, the one chessboard where the game happens.
+ * A class for the one chessboard where the game happens.
  */
-public class Chessboard {
-
-	private static Chessboard currentChessboard = getInstance();
-	
+public class Chessboard {	
 	private Random random = new Random();
 
 	private final int size;
@@ -44,13 +44,8 @@ public class Chessboard {
 	}
 
 	public Set<Piece> getPiecesOnSquare(Square square) {
-		Set<Piece> result = new HashSet<Piece>();
-		for (Piece piece : getAllPieces()) {
-			if (piece.getPosition().equals(square)) {
-				result.add(piece);
-			}
-		}
-		return result;
+		return getAllPieces().stream().filter(piece -> piece.getPosition().equals(square))
+				.collect(Collectors.toSet());
 	}
 
 	public boolean isInBoard(Square square) {
@@ -58,8 +53,8 @@ public class Chessboard {
 	}
 
 	public ExistenceProbability ProbabilityOn(Square square, PieceColor color) {
-		Set<ExistenceProbability> existanceProbabilities = getPiecesOnSquare(square, color).stream()
-				.map(Piece::getExistanceProbability).collect(Collectors.toSet());
+		List<ExistenceProbability> existanceProbabilities = getPiecesOnSquare(square, color).stream()
+				.map(Piece::getExistanceProbability).collect(Collectors.toList());
 		return ExistenceProbability.sumProbability(existanceProbabilities);
 	}
 
@@ -85,38 +80,86 @@ public class Chessboard {
 		allPieces.remove(piece);
 	}
 
-	public static Chessboard getInstance() {
-		if (currentChessboard == null) {
-			try{
-				currentChessboard = new Chessboard(8);
-				//Add pawns
-				for(int i = 1; i <= 8; i++){
-					currentChessboard.addChessPiece(new Pawn(new Square(i,2), PieceColor.WHITE));
-					currentChessboard.addChessPiece(new Pawn(new Square(i,7), PieceColor.BLACK));
-				}
-				//Add rest
-				currentChessboard.addChessPiece(new Queen(new Square(4,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Queen(new Square(4,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new King(new Square(5,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new King(new Square(5,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Bishop(new Square(3,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Bishop(new Square(3,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Bishop(new Square(6,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Bishop(new Square(6,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Knight(new Square(2,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Knight(new Square(2,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Knight(new Square(7,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Knight(new Square(7,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Rook(new Square(1,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Rook(new Square(1,8), PieceColor.BLACK));
-				currentChessboard.addChessPiece(new Rook(new Square(8,1), PieceColor.WHITE));
-				currentChessboard.addChessPiece(new Rook(new Square(8,8), PieceColor.BLACK));
+	public static Chessboard getEmptyChessboard() {
+		return new Chessboard(8);
+	}
+
+	public static Chessboard getStandardChessboard() {
+		Chessboard newBoard = new Chessboard(8);
+		try{
+			//Add pawns
+			for(int x = 1; x <= 8; x++){
+				newBoard.addChessPiece(new Pawn(new Square(x,2), PieceColor.WHITE, newBoard));
+				newBoard.addChessPiece(new Pawn(new Square(x,7), PieceColor.BLACK, newBoard));
 			}
-			catch(Exception e){
-				throw new Error("The chessboard couldn't be properly constructed.");
+			//Add rest
+			newBoard.addChessPiece(new Queen(new Square(4,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Queen(new Square(4,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new King(new Square(5,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new King(new Square(5,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(3,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(3,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(6,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Bishop(new Square(6,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(2,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(2,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(7,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Knight(new Square(7,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(1,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(1,8), PieceColor.BLACK, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(8,1), PieceColor.WHITE, newBoard));
+			newBoard.addChessPiece(new Rook(new Square(8,8), PieceColor.BLACK, newBoard));
+		}
+		catch(Exception e){
+			throw new Error("The chessboard couldn't be properly constructed.");
+		}
+		return newBoard;
+	}
+
+	public static Chessboard getFischerRandomChessboard() {
+		return getGeneralizedFischerRandomChessboard(1);
+	}
+	
+	public static Chessboard getGeneralizedFischerRandomChessboard(int splitCount) {
+		Chessboard newBoard = new Chessboard(8);
+		try{
+			ExistenceProbability probabilityEach = ExistenceProbability.fromBigFraction(new BigFraction(1, splitCount));
+			if(probabilityEach.isDead()){
+				System.out.println(probabilityEach);
+				System.out.println(probabilityEach.isDead());
+				throw new Exception("Cant't split so fine!");
+			}
+			for(int i = 0; i < splitCount; i++){
+				//Add pawns
+				for(int x = 1; x <= 8; x++){
+					newBoard.addChessPiece(new Pawn(new Square(x,2), PieceColor.WHITE, newBoard));
+					newBoard.addChessPiece(new Pawn(new Square(x,7), PieceColor.BLACK, newBoard));
+				}
+				//Each are the sets {1,2,3,4,5,6,7,8}
+				List<Integer> blackSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
+				List<Integer> whiteSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
+				//In Fisher Random Chess the pieces on the home rows are randomly shuffled
+				Collections.shuffle(blackSequence);
+				Collections.shuffle(whiteSequence);
+				//Add rest
+				for(PieceColor color : PieceColor.values()){
+					int yValue = color == PieceColor.BLACK ? 8 : 1;
+					newBoard.addChessPiece(new Queen(new Square(blackSequence.get(0), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new King(new Square(blackSequence.get(1), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(2), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(3), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(4), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(5), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(6), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(7), yValue), color, probabilityEach, newBoard));
+				}
 			}
 		}
-		return currentChessboard;
+		catch(Exception e){
+			e.printStackTrace();
+			throw new Error("The chessboard couldn't be properly constructed.");
+		}
+		return newBoard;
 	}
 
 	public Set<Piece> getAllPieces() {
@@ -266,7 +309,7 @@ public class Chessboard {
 	}
 	
 	public boolean probabilisticHasLost(PieceColor player){
-		double totalKingProbability = ExistenceProbability.sumProbability(getAllPiecesOf(player).stream().filter(piece -> piece instanceof King).map(Piece::getExistanceProbability).collect(Collectors.toSet())).asDouble();
+		double totalKingProbability = ExistenceProbability.sumProbability(getAllPiecesOf(player).stream().filter(piece -> piece instanceof King).map(Piece::getExistanceProbability).collect(Collectors.toList())).asDouble();
 		return random.nextDouble() > totalKingProbability;
 	}
 	

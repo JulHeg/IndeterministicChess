@@ -2,6 +2,7 @@ package test.test.IndeterministicChess.Piece;
 
 import java.util.*;
 
+import test.test.IndeterministicChess.Board.Chessboard;
 import test.test.IndeterministicChess.Board.Square;
 
 public class King extends Piece {
@@ -13,19 +14,19 @@ public class King extends Piece {
 		return getPieceColor() == PieceColor.WHITE ? "♔" : "♚";
 	}
 
-	public King(Square square, PieceColor owner) {
-		super(square, owner);
+	public King(Square square, PieceColor owner, Chessboard chessboard) {
+		super(square, owner, chessboard);
 	}
 
-	public King(Square square, PieceColor owner, ExistenceProbability existenceProbability) {
-		super(square, owner, existenceProbability);
+	public King(Square square, PieceColor owner, ExistenceProbability existenceProbability, Chessboard chessboard) {
+		super(square, owner, existenceProbability, chessboard);
 	}
 
 	public King(Piece piece) {
 		super(piece);
 	}
 
-	protected King quasiClone() {
+	protected King myClone() {
 		return new King(this);
 	}
 

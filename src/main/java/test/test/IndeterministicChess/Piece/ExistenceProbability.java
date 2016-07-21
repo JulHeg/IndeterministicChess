@@ -1,6 +1,6 @@
 package test.test.IndeterministicChess.Piece;
 
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.math3.fraction.*;
 import org.apache.commons.math3.util.FastMath;
@@ -15,13 +15,13 @@ public class ExistenceProbability {
 	public static final ExistenceProbability ONE = new ExistenceProbability(BigFraction.ONE);
 	public static final ExistenceProbability ZERO = new ExistenceProbability(BigFraction.ZERO);
 
-	public static final BigFraction ONE_TENTH = new BigFraction(1, 10);
+	public static final ExistenceProbability ONE_TENTH = new ExistenceProbability(new BigFraction(1,10));
 
-	public ExistenceProbability formBigFraction(BigFraction bigFraction) throws Exception {
-		if (ONE.greaterEqual(bigFraction) && ZERO.lessEqual(bigFraction)) {
+	public static ExistenceProbability fromBigFraction(BigFraction bigFraction) throws Exception {
+		if (!ONE.greaterEqual(bigFraction) || !ZERO.lessEqual(bigFraction)) {
 			throw new Exception("An ExistanceProbability must be between one and zero!");
 		}
-		return new ExistenceProbability(probability);
+		return new ExistenceProbability(bigFraction);
 	}
 
 	public ExistenceProbability getHalf() {
@@ -37,7 +37,7 @@ public class ExistenceProbability {
 	}
 
 	public boolean isDead() {
-		return lessEqual(ONE_TENTH);
+		return !lessEqual(ONE_TENTH);
 	}
 	
 
@@ -60,7 +60,7 @@ public class ExistenceProbability {
 		return ((ExistenceProbability) o).getProbability().equals(probability);
 	}
 
-	public static ExistenceProbability sumProbability(Set<ExistenceProbability> summands) {
+	public static ExistenceProbability sumProbability(List<ExistenceProbability> summands) {
 		BigFraction result = BigFraction.ZERO;
 		for (ExistenceProbability summand : summands) {
 			result = result.add(summand.getProbability());

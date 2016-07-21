@@ -11,12 +11,12 @@ import com.google.common.collect.*;
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
-public class ResponseWindow extends generalIO{
+public class LocalGUIWindow extends generalIO{
 	final private JProgressBar progressBar;
 	final private ImmutableBiMap<Square, JButton> squares;
 	final private JButton buttonMove, buttonSplit, buttonRedetermine, buttonEnd;
 	final public JPanel panel;
-	ResourceBundle bundle = ResourceBundle.getBundle("i18n");
+	ResourceBundle bundle;
 	final private JFrame frame;
 	final private Color whiteSquareColor = new Color(255, 204, 128);
 	final private Color blackSquareColor = new Color(194, 153, 112);
@@ -42,11 +42,14 @@ public class ResponseWindow extends generalIO{
 		super.setAmountOfMoveLeft(target);
 	}
 	
-	public ResponseWindow(PieceColor player) {
-		super(player);
+	public LocalGUIWindow(PieceColor player, Chessboard chessboard) {
+		super(player, chessboard);
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
+    	bundle = ResourceBundle.getBundle("i18n");
+		bundle.getString("applicationTitle");
+		bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName");
 		frame = new JFrame(bundle.getString("applicationTitle") + " - " + bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName"));
 		panel = new JPanel(new BorderLayout());
 		progressBar = new JProgressBar(0, 100);
@@ -125,7 +128,7 @@ public class ResponseWindow extends generalIO{
 					makeMovingMove();
 					break;
 				case REDETERMINE:
-					Chessboard.getInstance().redetermine();
+					chessboard.redetermine();
 					break;
 				case SPLIT:
 					makeSplittingMove();
@@ -186,18 +189,13 @@ public class ResponseWindow extends generalIO{
 	
 	Thread responseGetter;
 	
-	@Override
-	protected void checkForPromotion(){
-		for(Pawn pawn : Chessboard.getInstance().getPawnsToBePromoted()){
-			Object[] options = Chessboard.promotionPositions;
-			String userChoice =	(String)JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), pawn.getPosition()), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			try {
-				Chessboard.getInstance().changeRole(pawn, userChoice);
-			} catch (Exception e) {
-				//Try again until the user doesn't quit any more
-				checkForPromotion();
-			}
+	protected String selectPromotionOption(Set<String> options, Square postion){
+		Object userChoice = JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), postion), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options.toArray(), (Object)options.iterator().next());
+		if(userChoice == null) {
+			//If the user cancels the dialogue, just ask again
+			userChoice = selectPromotionOption(options, postion);
 		}
+		return (String) userChoice;
 	}
 	
 	private void deselectAll(){
@@ -212,24 +210,23 @@ public class ResponseWindow extends generalIO{
 	}
 	
 	@Override
-	protected Piece selectAPieceOn(Square square){
-		Set<Piece> piecesOn = Chessboard.getInstance().getPiecesOnSquare(square, player);
-		if(piecesOn.size() == 1){
-			return piecesOn.iterator().next();
+	protected Piece selectAPieceOf(Set<Piece> pieces){
+		if(pieces.size() == 1){
+			return pieces.iterator().next();
 		}
-		else if(piecesOn.size() > 1){
-			Object[] options = piecesOn.stream().map(Piece::getTypeName).toArray(String[]::new);
+		else if(pieces.size() > 1){
+			Object[] options = pieces.stream().map(Piece::getTypeName).toArray(String[]::new);
 			Object userChoice = JOptionPane.showInputDialog(frame, bundle.getString("pieceSelectionDialogueQuestion"), bundle.getString("pieceSelectionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 			if(userChoice == null){
-				return selectAPieceOn(square);
+				return selectAPieceOf(pieces);
 			}
 			else {
 				String selectedPiece =	(String)userChoice;
-				return piecesOn.stream().filter(piece -> piece.getTypeName().equals(selectedPiece)).findAny().get();
+				return pieces.stream().filter(piece -> piece.getTypeName().equals(selectedPiece)).findAny().get();
 			}
 		}
 		else {
-			throw new Error("A Square without pieces on it was selectable for moving.");
+			throw new Error("There has to be a movable piece on the selected Square!");
 		}
 	}
 
@@ -312,7 +309,7 @@ public class ResponseWindow extends generalIO{
 	public void refreshLog(){
 		for(JButton button : squares.values()){
 			Square square = squares.inverse().get(button);
-			String Symbol = Chessboard.getInstance().getProbabilisticSymbolOn(square);
+			String Symbol = chessboard.getProbabilisticSymbolOn(square);
 			button.setText(Symbol);
 		}
 	}
