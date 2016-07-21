@@ -11,7 +11,7 @@ import com.google.common.collect.*;
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
-public class ResponseWindow extends generalIO{
+public class LocalGUIWindow extends generalIO{
 	final private JProgressBar progressBar;
 	final private ImmutableBiMap<Square, JButton> squares;
 	final private JButton buttonMove, buttonSplit, buttonRedetermine, buttonEnd;
@@ -42,7 +42,7 @@ public class ResponseWindow extends generalIO{
 		super.setAmountOfMoveLeft(target);
 	}
 	
-	public ResponseWindow(PieceColor player) {
+	public LocalGUIWindow(PieceColor player) {
 		super(player);
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

@@ -10,15 +10,13 @@ import test.test.IndeterministicChess.Piece.*;
  * The main class that lets the player make one move after the other and checks for wins or a draw.
  */
 
-//@SpringBootApplication
 public class Main{
 	
 	public static void main(String[] args) {
 		// Schedule a job for the event dispatch thread:
 		// creating and showing this application's GUI.
-        //SpringApplication.run(SpringApplication.class, args);
-		generalIO blackWindow = new ResponseWindow(PieceColor.BLACK);
-		generalIO whiteWindow = new ResponseWindow(PieceColor.WHITE);
+		generalIO blackWindow = new LocalGUIWindow(PieceColor.BLACK);
+		generalIO whiteWindow = new LocalGUIWindow(PieceColor.WHITE);
 		SwingUtilities.invokeLater(new Thread() {
 			public void run() {
 				blackWindow.showGUI();
