@@ -10,7 +10,12 @@ import com.google.common.collect.Sets;
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
-public abstract class generalIO {
+/*
+ * An abstract class that represents some form of UI.
+ * It also contains the logic for what constitutes a valid move in chess. 
+ * At the moment GeneralUI is only extended by LocalGUIWindow.
+ */
+public abstract class GeneralUI {
 	protected final Chessboard chessboard;
 	
 	final public PieceColor player;
@@ -70,7 +75,7 @@ public abstract class generalIO {
 	 */
 	protected abstract Piece selectAPieceOf(Set<Piece> pieces);	
 	
-	public generalIO(PieceColor player, Chessboard chessboard){
+	public GeneralUI(PieceColor player, Chessboard chessboard){
 		this.player = player;
 		this.chessboard = chessboard;
 	}
@@ -83,6 +88,9 @@ public abstract class generalIO {
 	}
 
 	protected void setAmountOfMoveLeft(int target){
+		if(target < 0 || target > 100){
+			throw new Error("setAmountOfMoveLeft was called with a value not between 0 and 100.");
+		}
 		amountOfMoveLeft = target;
 	}
 

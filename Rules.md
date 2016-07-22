@@ -8,9 +8,11 @@ Das wird dann etwa unter anderem so ausgedrückt, dass sich auf A4 eine `10%`-Da
 
 ## 1. Figurregeln
 
-1.1. Statt einem Zug kann eine Figur auch halbiert werden, beide Teile können dann in diesem Zug entsprechend den Zugregeln noch auseinanderbewegt werden.
+1.1. Statt einem Zug kann eine Figur auch gespalten werden, beide Hälften können dann in diesem Zug entsprechend den Zugregeln noch auseinanderbewegt werden, die zweite darf auch stehen bleiben.
 
-1.2. Statt einem Zug kann der „Bei bestimmen“-Knopf gedrückt werden. Durch ihn wird jede Figur, die hier die Wahrscheinlichkeit 'p' habe, mit der Wahrscheinlichkeit 'p' wieder mit '100%'-iger Wahrscheinlichkeit entstehen und mit der Wahrscheinlichkeit '100%-p'  verschwinden.
+1.1. Nur der König darf nicht gespalten werden.
+
+1.2. Statt einem Zug kann der „Wiederbestimmen“-Knopf gedrückt werden. Durch ihn wird jede Figur, die hier die Wahrscheinlichkeit 'p' habe, mit der Wahrscheinlichkeit 'p' wieder mit '100%'-iger Wahrscheinlichkeit entstehen und mit der Wahrscheinlichkeit '100%-p'  verschwinden.
 
 1.3. Figuren mit einer Existenzwahrscheinlichkeit von weniger als `10%` werden als vernachlässigbar entfernt.
 

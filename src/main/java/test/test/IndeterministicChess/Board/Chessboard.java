@@ -140,23 +140,27 @@ public class Chessboard {
 				newBoard.addChessPiece(new Pawn(new Square(x,7), PieceColor.BLACK, newBoard));
 			}
 			//Add rest
-			for(int i = 0; i < splitCount; i++){
+			for(PieceColor color : PieceColor.values()){
+				//King has may not be splitted
+				int kingPosition = newBoard.random.nextInt(8) + 1;
+				for(int i = 0; i < splitCount; i++){
 				//Each are the sets {1,2,3,4,5,6,7,8}
 				List<Integer> blackSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
 				List<Integer> whiteSequence = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toList());
+				blackSequence.remove(kingPosition - 1);
+				whiteSequence.remove(kingPosition - 1);
 				//In Fisher Random Chess the pieces on the home rows are randomly shuffled
 				Collections.shuffle(blackSequence);
 				Collections.shuffle(whiteSequence);
-				for(PieceColor color : PieceColor.values()){
 					int yValue = color == PieceColor.BLACK ? 8 : 1;
+					newBoard.addChessPiece(new King(new Square(kingPosition, yValue), color, probabilityEach, newBoard));
 					newBoard.addChessPiece(new Queen(new Square(blackSequence.get(0), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new King(new Square(blackSequence.get(1), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(1), yValue), color, probabilityEach, newBoard));
 					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(2), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(3), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(3), yValue), color, probabilityEach, newBoard));
 					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(4), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(5), yValue), color, probabilityEach, newBoard));
+					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(5), yValue), color, probabilityEach, newBoard));
 					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(6), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(7), yValue), color, probabilityEach, newBoard));
 				}
 			}
 		}

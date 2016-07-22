@@ -17,7 +17,7 @@ import com.google.common.collect.*;
 import test.test.IndeterministicChess.Board.*;
 import test.test.IndeterministicChess.Piece.*;
 
-public class LocalGUIWindow extends generalIO{
+public class LocalGUIWindow extends GeneralUI{
 	final private JProgressBar progressBar;
 	final private ImmutableBiMap<Square, JButton> squares;
 	final private JButton buttonMove, buttonSplit, buttonRedetermine, buttonEnd;

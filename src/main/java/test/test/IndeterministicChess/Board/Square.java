@@ -1,5 +1,8 @@
 package test.test.IndeterministicChess.Board;
 
+/*
+ * A single square on a chessboard
+ */
 public class Square {
 	private int xPosition, yPosition;
 

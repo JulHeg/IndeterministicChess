@@ -99,7 +99,7 @@ public abstract class Piece {
 	}
 	
 	public boolean canSplit(){
-		return !chessboard.isDead(existanceProbability.getHalf());
+		return !chessboard.isDead(existanceProbability.getHalf()) && !(this instanceof King);
 	}
 	
 	public boolean canMove(){

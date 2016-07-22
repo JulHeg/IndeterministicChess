@@ -3,15 +3,15 @@ package test.test.IndeterministicChess.Match;
 import javax.swing.SwingUtilities;
 
 import test.test.IndeterministicChess.Board.Chessboard;
-import test.test.IndeterministicChess.IO.generalIO;
+import test.test.IndeterministicChess.IO.GeneralUI;
 import test.test.IndeterministicChess.Piece.PieceColor;
 
 public class MatchController extends Thread{
 	private final Chessboard chessboard;
-	private final generalIO blackIO;
-	private final generalIO whiteIO;
+	private final GeneralUI blackIO;
+	private final GeneralUI whiteIO;
 	
-	public MatchController(generalIO blackIO, generalIO whiteIO, Chessboard chessboard){
+	public MatchController(GeneralUI blackIO, GeneralUI whiteIO, Chessboard chessboard){
 		this.blackIO = blackIO;
 		this.whiteIO = whiteIO;
 		this.chessboard = chessboard;

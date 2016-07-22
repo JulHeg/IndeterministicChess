@@ -2,6 +2,9 @@ package test.test.IndeterministicChess.Board;
 
 import test.test.IndeterministicChess.Piece.ExistenceProbability;
 
+/*
+ * Options for a game. At the moment only the minimum amount of probability need to not disappear.
+ */
 public class ChessboardOptions {
 	private ExistenceProbability minimalSurvivalProbability;
 	
