@@ -45,13 +45,13 @@ public abstract class generalIO {
 			makeMovingMove();
 			break;
 		case REDETERMINE:
-			chessboard.redetermine();
+			chessboard.betterRedetermine();
 			break;
 		case SPLIT:
 			makeSplittingMove();
 			break;
 		}
-}
+	}
 
 	protected void checkForPromotion(){
 		for(Pawn pawn : chessboard.getPawnsToBePromoted()){
@@ -101,17 +101,15 @@ public abstract class generalIO {
 	protected void makeMovingMove(){
 		Set<Piece> alreadyMovedPieces = new HashSet<Piece>();
 		while(true){
-			Set<Piece> movablePieces = getActuallyMovablePieces();
+			Set<Piece> movablePieces = Sets.difference(getActuallyMovablePieces(), alreadyMovedPieces);
 			if(movablePieces.isEmpty()){
 				break;
 			}
-			System.out.println("test");
-			Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(Sets.difference(movablePieces, alreadyMovedPieces)));
+			Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(movablePieces));
 			if(thisSelection == null){//i.e. the exit button was pushed
 				break;
 			}
 			Piece pieceToMove = selectAPieceOf(Sets.difference(getActuallyMovablePiecesOn(thisSelection), alreadyMovedPieces));
-			System.out.println("test");
 			Set<Square> nextSquares = pieceToMove.getPossibleNextSquares();
 			//Get the piece's target square
 			thisSelection = selectOneOfTheseSquares(nextSquares);
@@ -148,6 +146,7 @@ public abstract class generalIO {
 		} catch (Exception e1) {
 			throw new Error(e1);
 		}
+		
 		//Move one Half
 		thisSelection = selectOneOfTheseSquares(otherHalf.getPossibleNextSquares());
 		try {
@@ -157,6 +156,7 @@ public abstract class generalIO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		//Move remaining half
 		Set<Square> possibleTargets = pieceToMove.getPossibleNextSquares();
 		possibleTargets.add(pieceToMove.getPosition());
@@ -169,4 +169,4 @@ public abstract class generalIO {
 			e.printStackTrace();
 		}
 	}
-	}
+}

@@ -26,7 +26,7 @@ public class Pawn extends Piece {
 		super(piece);
 	}
 
-	protected Pawn myClone() {
+	public Pawn myClone() {
 		return new Pawn(this);
 	}
 

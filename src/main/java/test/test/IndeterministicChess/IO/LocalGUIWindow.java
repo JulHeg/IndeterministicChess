@@ -168,7 +168,6 @@ public class LocalGUIWindow extends generalIO{
 	
 	protected String selectPromotionOption(Set<String> options, Square postion){
 		List<String> translations = options.stream().map(bundle::getString).collect(Collectors.toList());
-		System.out.println(translations);
 		Object userChoice = JOptionPane.showInputDialog(frame, String.format(bundle.getString("promotionDialogueQuestion"), postion), bundle.getString("promotionDialogueTitle"), JOptionPane.PLAIN_MESSAGE, null, translations.toArray(), translations.get(0));
 		if(userChoice == null) {
 			//If the user cancels the dialogue, just ask again

@@ -26,7 +26,7 @@ public class Rook extends Piece {
 		super(piece);
 	}
 
-	protected Rook myClone() {
+	public Rook myClone() {
 		return new Rook(this);
 	}
 

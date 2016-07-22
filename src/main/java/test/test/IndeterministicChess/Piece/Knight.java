@@ -26,7 +26,7 @@ public class Knight extends Piece {
 		super(piece);
 	}
 
-	protected Knight myClone() {
+	public Knight myClone() {
 		return new Knight(this);
 	}
 

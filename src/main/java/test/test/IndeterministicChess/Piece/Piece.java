@@ -12,8 +12,21 @@ import test.test.IndeterministicChess.Board.Square;
  * An abstract class for all chess pieces.
  */
 public abstract class Piece {
+	
+	private WholePiece wholePiece;
+	
+	public WholePiece getWholePiece(){
+		if(wholePiece == null){
+			wholePiece = new WholePiece(this);
+		}
+		return wholePiece;
+	}
+	
+	public void setWholePiece(WholePiece wholePiece){
+		this.wholePiece = wholePiece;
+	}
 
-	private PieceColor owner;
+	private final PieceColor owner;
 
 	private Square position;
 
@@ -30,7 +43,11 @@ public abstract class Piece {
 	}
 
 	public Piece(Piece original) {
-		this(original.position, original.owner, original.existanceProbability, original.chessboard);
+		this.position = original.position;
+		this.owner = original.owner;
+		this.existanceProbability = original.existanceProbability;
+		this.chessboard = original.chessboard;
+		wholePiece = original.wholePiece;
 	}
 
 	public Piece(Square position, PieceColor owner, ExistenceProbability existanceProbability, Chessboard chessboard) {
@@ -38,6 +55,7 @@ public abstract class Piece {
 		this.owner = owner;
 		this.existanceProbability = existanceProbability;
 		this.chessboard = chessboard;
+		wholePiece = new WholePiece(this);
 	}
 	
 	public void setProbabilityToFull(){
@@ -106,7 +124,7 @@ public abstract class Piece {
 		return !getPossibleNextSquares().isEmpty();
 	}
 	
-	protected abstract Piece myClone();
+	public abstract Piece myClone();
 
 	public void incorporatePiece(Piece other) {
 		existanceProbability = existanceProbability.add(other.getExistanceProbability());
@@ -118,12 +136,13 @@ public abstract class Piece {
 		}
 		existanceProbability = existanceProbability.getHalf();
 		Piece otherHalf = myClone();
+		getWholePiece().addPart(otherHalf);
 		return otherHalf;
 	}
 	
 	public Piece cloneOfHalf(){
 		try{
-		return myClone().splitOfHalf();
+		    return myClone().splitOfHalf();
 		}
 		catch(Exception e){
 			e.printStackTrace();

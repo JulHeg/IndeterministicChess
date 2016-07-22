@@ -14,7 +14,7 @@ import test.test.IndeterministicChess.Piece.*;
  * A class for the one chessboard where the game happens.
  */
 public class Chessboard {	
-	public Random random = new Random();
+	private Random random = new Random();
 
 	private final int size;
 
@@ -81,6 +81,7 @@ public class Chessboard {
 	
 	public void removePiece(Piece piece){
 		allPieces.remove(piece);
+		piece.getWholePiece().removePart(piece);
 	}
 
 	public static Chessboard getEmptyChessboard() {
@@ -147,18 +148,24 @@ public class Chessboard {
 				//In Fisher Random Chess the pieces on the home rows are randomly shuffled
 				Collections.shuffle(blackSequence);
 				Collections.shuffle(whiteSequence);
+				List<Piece> pieces = new ArrayList<Piece>();
 				for(PieceColor color : PieceColor.values()){
 					int yValue = color == PieceColor.BLACK ? 8 : 1;
-					newBoard.addChessPiece(new Queen(new Square(blackSequence.get(0), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new King(new Square(blackSequence.get(1), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(2), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Bishop(new Square(blackSequence.get(3), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(4), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Knight(new Square(blackSequence.get(5), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(6), yValue), color, probabilityEach, newBoard));
-					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(7), yValue), color, probabilityEach, newBoard));
+					pieces.add(new Queen(new Square(blackSequence.get(0), yValue), color, probabilityEach, newBoard));
+					pieces.add(new King(new Square(blackSequence.get(1), yValue), color, probabilityEach, newBoard));
+					pieces.add(new Bishop(new Square(blackSequence.get(2), yValue), color, probabilityEach, newBoard));
+					pieces.add(new Bishop(new Square(blackSequence.get(3), yValue), color, probabilityEach, newBoard));
+					pieces.add(new Knight(new Square(blackSequence.get(4), yValue), color, probabilityEach, newBoard));
+					pieces.add(new Knight(new Square(blackSequence.get(5), yValue), color, probabilityEach, newBoard));
+					pieces.add(new Rook(new Square(blackSequence.get(6), yValue), color, probabilityEach, newBoard));
+					pieces.add(new Rook(new Square(blackSequence.get(7), yValue), color, probabilityEach, newBoard));
 				}
+				for(int j = 8; j < pieces.size(); j++){
+					pieces.get(j % 8).getWholePiece().addPart(pieces.get(j));
+				}
+				newBoard.allPieces.addAll(pieces);
 			}
+			//Add the Pieces into the right WholePieces
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -247,36 +254,59 @@ public class Chessboard {
 		clear();
 		allPieces.addAll(newPieces);
 	}
+
+	public void betterRedetermine() {
+		int i = 1;
+		Chessboard possibility;
+		Set<UUID> fullWholePiecesID = getFullWholePiecesID();
+		boolean isDuplicateFree, allFullPiecesThere;
+		do{
+			i++;
+			possibility = getEmptyChessboard();
+			possibility.allPieces.addAll(allPieces.stream().map(piece -> piece.myClone()).collect(Collectors.toSet()));
+			possibility.redetermine();
+			List<UUID> IDs = possibility.allPieces.stream().map(piece -> piece.getWholePiece().id).collect(Collectors.toList());
+			Set<UUID> distinctIDs = new TreeSet<UUID>(IDs);
+			isDuplicateFree = IDs.size() == distinctIDs.size();
+			allFullPiecesThere = Sets.difference(fullWholePiecesID, possibility.getFullWholePiecesID()).isEmpty();
+			if(isDuplicateFree && allFullPiecesThere){
+				System.out.println(i);
+				System.out.println(fullWholePiecesID.size());
+				System.out.println(possibility.getFullWholePiecesID().size());
+		}
+		} while (!(isDuplicateFree && allFullPiecesThere));
+		System.out.println(possibility.getFullWholePiecesID().size());
+		clear();
+		allPieces.addAll(possibility.allPieces);
+	}
 	
 	public static final String[] promotionPositions = {"Knight","Bishop","Rook","Queen"};
 
 	public void changeRole(Pawn pawn, String position) throws Exception{
 		if(!allPieces.contains(pawn)){
-			throw new Exception("The promoted pawn is not atctually on the board!");
+			throw new Exception("The promoted pawn is not actually on the board!");
 		}
 		allPieces.remove(pawn);
+		Piece newPiece;
 		switch (position) {
 		case "Knight":
-			addChessPiece(new Knight(pawn));
+			newPiece = new Knight(pawn);
 			break;
 		case "Bishop":
-			addChessPiece(new Bishop(pawn));
+			newPiece = new Bishop(pawn);
 			break;
 		case "Rook":
-			addChessPiece(new Rook(pawn));
-			break;
-		case "Pawn":
-			addChessPiece(new Pawn(pawn));
-			break;
-		case "King":
-			addChessPiece(new King(pawn));
+			newPiece = new Rook(pawn);
 			break;
 		case "Queen":
-			addChessPiece(new Queen(pawn));
+			newPiece = new Queen(pawn);
 			break;
 		default:
 			throw new Exception("The new type for the promoted pawn is not supported!");
 		}
+		pawn.getWholePiece().addPart(newPiece);
+		pawn.getWholePiece().removePart(pawn);
+		addChessPiece(newPiece);
 	}
 	
 
@@ -320,5 +350,9 @@ public class Chessboard {
 	
 	public boolean canSomehowMove(PieceColor player){
 		return getAllPiecesOf(player).stream().anyMatch(Piece::canMove);
+	}
+	
+	public Set<UUID> getFullWholePiecesID(){
+		return allPieces.stream().map(Piece::getWholePiece).filter(WholePiece::isFull).map(wholePiece -> wholePiece.id).distinct().collect(Collectors.toSet());
 	}
 }

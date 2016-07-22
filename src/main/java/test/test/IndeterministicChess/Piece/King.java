@@ -26,7 +26,7 @@ public class King extends Piece {
 		super(piece);
 	}
 
-	protected King myClone() {
+	public King myClone() {
 		return new King(this);
 	}
 
