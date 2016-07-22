@@ -50,10 +50,7 @@ public class LocalGUIWindow extends GeneralUI{
 	
 	public LocalGUIWindow(PieceColor player, Chessboard chessboard) {
 		super(player, chessboard);
-    	try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {}
-    	bundle = ResourceBundle.getBundle("i18n");
+    	bundle = ResourceBundle.getBundle("test.test.IndeterministicChess.IO.i18n");
 		bundle.getString("applicationTitle");
 		bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName");
 		frame = new JFrame(bundle.getString("applicationTitle") + " - " + bundle.getString(player == PieceColor.BLACK ? "blackName" : "whiteName"));

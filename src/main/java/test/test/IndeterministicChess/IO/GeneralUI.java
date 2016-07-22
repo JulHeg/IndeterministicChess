@@ -113,13 +113,11 @@ public abstract class GeneralUI {
 			if(movablePieces.isEmpty()){
 				break;
 			}
-			System.out.println("test");
 			Square thisSelection = selectOneOfTheseSquares(getOccupiedSquares(Sets.difference(movablePieces, alreadyMovedPieces)));
 			if(thisSelection == null){//i.e. the exit button was pushed
 				break;
 			}
 			Piece pieceToMove = selectAPieceOf(Sets.difference(getActuallyMovablePiecesOn(thisSelection), alreadyMovedPieces));
-			System.out.println("test");
 			Set<Square> nextSquares = pieceToMove.getPossibleNextSquares();
 			//Get the piece's target square
 			thisSelection = selectOneOfTheseSquares(nextSquares);

@@ -128,8 +128,8 @@ public class Chessboard {
 	}
 	
 	public static Chessboard getGeneralizedFischerRandomChessboard(int splitCount) {
-		Chessboard newBoard = new Chessboard(8, ChessboardOptions.standardValue);
 		try{
+			Chessboard newBoard = new Chessboard(8, ChessboardOptions.standardValue);
 			ExistenceProbability probabilityEach = ExistenceProbability.fromBigFraction(new BigFraction(1, splitCount));
 			if(newBoard.isDead(probabilityEach)){
 				throw new Exception("Cant't split so fine!");
@@ -163,12 +163,13 @@ public class Chessboard {
 					newBoard.addChessPiece(new Rook(new Square(blackSequence.get(6), yValue), color, probabilityEach, newBoard));
 				}
 			}
+			newBoard.combinePieces();
+			return newBoard;
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			throw new Error("The chessboard couldn't be properly constructed.");
 		}
-		return newBoard;
 	}
 
 	public Set<Piece> getAllPieces() {
