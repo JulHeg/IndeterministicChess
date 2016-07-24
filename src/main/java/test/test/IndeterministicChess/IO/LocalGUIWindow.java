@@ -77,6 +77,8 @@ public class LocalGUIWindow extends GeneralUI{
 				button.setOpaque(true);
 				button.setMargin(new Insets(0, 0, 0, 0));
 				button.setBorder(null);
+				button.setPreferredSize(new Dimension(75, 75));
+				button.setFocusable(false);
 				squareButtonsListener listener = new squareButtonsListener();
 				listener.square = square;
 				button.addActionListener(listener);
